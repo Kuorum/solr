@@ -6,47 +6,40 @@
    <!-- If you remove this field, you must _also_ disable the update log in solrconfig.xml
       or Solr won't start. _version_ and update log are required for SolrCloud
    --> 
-   <field name="_version_" type="long" indexed="true" stored="true"/>
-   <field name="_id" type="string" indexed="true" stored="true" required="false" multiValued="false" />
-   <field name="_ts" type="long" indexed="true" stored="true" />
+   <field name="_version_" 		type="long" 	indexed="true" stored="true"/>
+   <field name="id"			type="string" 	indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="_ts" 			type="long" 	indexed="true" stored="true" />
         
-   <field name="name" type="text_general" indexed="true" stored="true"/>
-   <field name="text" type="text_general" indexed="true" stored="true"/>
-   <field name="language" type="text_general" indexed="true" stored="true" multiValued="true"/>
-   <field name="email" type="text_general" indexed="true" stored="true" termVectors="true" termPositions="true" termOffsets="true" />
-   <field name="username" type="text_general" indexed="true" stored="true" termVectors="true" termPositions="true" termOffsets="true" />
+   <field name="name" 			type="text_general" indexed="true" stored="true"/>
+   <field name="language" 		type="string"	indexed="true" stored="true" />
+   <field name="email" 			type="string"	indexed="true" stored="true" />
+   <field name="username" 		type="string"	indexed="true" stored="true" />
 
-   <field name="enabled" type="boolean" indexed="true" stored="true" />
-   <field name="accountExpired" type="boolean" indexed="true" stored="true" />
-   <field name="accountLocked" type="boolean" indexed="true" stored="true" />
+   <field name="enabled" 		type="boolean"	indexed="true" stored="true" />
+   <field name="accountExpired" 	type="boolean"	indexed="true" stored="true" />
+   <field name="accountLocked" 		type="boolean"	indexed="true" stored="true" />
 
-   <field name="relevantCommissions" type="text_general" indexed="true" stored="true" multiValued="true"/>
-   <field name="dateCreated" type="date" indexed="true" stored="true"/>
-   
+   <field name="relevantCommissions" 	type="string" 	indexed="true" stored="true" multiValued="true"/>
+   <field name="gender" 		type="string" 	indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="dateCreated" 		type="date" 	indexed="true" stored="true"/>
+
+
+   <field name="name_autocomplete" 	type="autocomplete" 	indexed="true" stored="false" multiValued="true"/>
+
+
+   <!-- COPY FIELDS -->
+   <copyField source="name" dest="name_autocomplete" maxChars="300"/>
+   <copyField source="username" dest="name_autocomplete" maxChars="300"/>
  </fields>
 
 
  <!-- Field to use to determine and enforce document uniqueness. 
       Unless this field is marked with required="false", it will be a required field
    -->
-<uniqueKey>_id</uniqueKey>
+<uniqueKey>id</uniqueKey>
 
   <types>
-    <!-- field type definitions. The "name" attribute is
-       just a label to be used by field definitions.  The "class"
-       attribute and any other attributes determine the real
-       behavior of the fieldType.
-         Class names starting with "solr" refer to java classes in a
-       standard package such as org.apache.solr.analysis
-    -->
-
-    <!-- The StrField type is not analyzed, but indexed/stored verbatim.
-       It supports doc values but in that case the field needs to be
-       single-valued and either required or have a default value.
-      -->
     <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
-
-    <!-- boolean type: "true" or "false" -->
     <fieldType name="boolean" class="solr.BoolField" sortMissingLast="true"/>
 
     <!-- sortMissingLast and sortMissingFirst attributes are optional attributes are
@@ -65,27 +58,11 @@
          field first in an ascending sort and last in a descending sort.
     -->    
 
-    <!--
-      Default numeric field types. For faster range queries, consider the tint/tfloat/tlong/tdouble types.
-
-      These fields support doc values, but they require the field to be
-      single-valued and either be required or have a default value.
-    -->
     <fieldType name="int" class="solr.TrieIntField" precisionStep="0" positionIncrementGap="0"/>
     <fieldType name="float" class="solr.TrieFloatField" precisionStep="0" positionIncrementGap="0"/>
     <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
     <fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" positionIncrementGap="0"/>
 
-    <!--
-     Numeric field types that index each value at various levels of precision
-     to accelerate range queries when the number of values between the range
-     endpoints is large. See the javadoc for NumericRangeQuery for internal
-     implementation details.
-
-     Smaller precisionStep values (specified in bits) will lead to more tokens
-     indexed per value, slightly larger index size, and faster range queries.
-     A precisionStep of 0 disables indexing at different precision levels.
-    -->
     <fieldType name="tint" class="solr.TrieIntField" precisionStep="8" positionIncrementGap="0"/>
     <fieldType name="tfloat" class="solr.TrieFloatField" precisionStep="8" positionIncrementGap="0"/>
     <fieldType name="tlong" class="solr.TrieLongField" precisionStep="8" positionIncrementGap="0"/>
@@ -137,38 +114,6 @@
     <fieldType name="pdouble" class="solr.DoubleField"/>
     <fieldType name="pdate" class="solr.DateField" sortMissingLast="true"/>
 
-    <!-- The "RandomSortField" is not used to store or search any
-         data.  You can declare fields of this type it in your schema
-         to generate pseudo-random orderings of your docs for sorting 
-         or function purposes.  The ordering is generated based on the field
-         name and the version of the index. As long as the index version
-         remains unchanged, and the same field name is reused,
-         the ordering of the docs will be consistent.  
-         If you want different psuedo-random orderings of documents,
-         for the same version of the index, use a dynamicField and
-         change the field name in the request.
-     -->
-    <fieldType name="random" class="solr.RandomSortField" indexed="true" />
-
-    <!-- solr.TextField allows the specification of custom text analyzers
-         specified as a tokenizer and a list of token filters. Different
-         analyzers may be specified for indexing and querying.
-
-         The optional positionIncrementGap puts space between multiple fields of
-         this type on the same document, with the purpose of preventing false phrase
-         matching across fields.
-
-         For more info on customizing your analyzer chain, please see
-         http://wiki.apache.org/solr/AnalyzersTokenizersTokenFilters
-     -->
-
-    <!-- One can also specify an existing Analyzer class that has a
-         default constructor via the class attribute on the analyzer element.
-         Example:
-    <fieldType name="text_greek" class="solr.TextField">
-      <analyzer class="org.apache.lucene.analysis.el.GreekAnalyzer"/>
-    </fieldType>
-    -->
 
     <!-- A text field that only splits on whitespace for exact matching of words -->
     <fieldType name="text_ws" class="solr.TextField" positionIncrementGap="100">
@@ -316,16 +261,6 @@
       </analyzer>
     </fieldType>
 
-    <!-- charFilter + WhitespaceTokenizer  -->
-    <!--
-    <fieldType name="text_char_norm" class="solr.TextField" positionIncrementGap="100" >
-      <analyzer>
-        <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
-        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
-      </analyzer>
-    </fieldType>
-    -->
-
     <!-- This is an example of using the KeywordTokenizer along
          With various TokenFilterFactories to produce a sortable field
          that does not include some properties of the source text
@@ -384,14 +319,6 @@
       </analyzer>
     </fieldtype>
 
-    <!-- lowercases the entire field value, keeping it as a single token.  -->
-    <fieldType name="lowercase" class="solr.TextField" positionIncrementGap="100">
-      <analyzer>
-        <tokenizer class="solr.KeywordTokenizerFactory"/>
-        <filter class="solr.LowerCaseFilterFactory" />
-      </analyzer>
-    </fieldType>
-
     <!-- 
       Example of using PathHierarchyTokenizerFactory at index time, so
       queries for paths match documents at that path, or in descendent paths
@@ -444,21 +371,6 @@
     <fieldType name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType"
         geo="true" distErrPct="0.025" maxDistErr="0.000009" units="degrees" />
 
-   <!-- Money/currency field type. See http://wiki.apache.org/solr/MoneyFieldType
-        Parameters:
-          defaultCurrency: Specifies the default currency if none specified. Defaults to "USD"
-          precisionStep:   Specifies the precisionStep for the TrieLong field used for the amount
-          providerClass:   Lets you plug in other exchange provider backend:
-                           solr.FileExchangeRateProvider is the default and takes one parameter:
-                             currencyConfig: name of an xml file holding exchange rates
-                           solr.OpenExchangeRatesOrgProvider uses rates from openexchangerates.org:
-                             ratesFileLocation: URL or path to rates JSON file (default latest.json on the web)
-                             refreshInterval: Number of minutes between each rates fetch (default: 1440, min: 60)
-   -->
-<!--
-    <fieldType name="currency" class="solr.CurrencyField" precisionStep="8" defaultCurrency="USD" currencyConfig="currency.xml" />
-    -->         
-
 
    <!-- some examples for different languages (generally ordered by ISO code) -->
 
@@ -506,6 +418,16 @@
         <!-- less aggressive: <filter class="solr.GalicianMinimalStemFilterFactory"/> -->
       </analyzer>
     </fieldType>
+
+    <!-- AUTOCOMPLETE -->
+<fieldType class="solr.TextField" name="autocomplete" positionIncrementGap="100">
+<analyzer>
+      <tokenizer class="solr.StandardTokenizerFactory"/>
+      <filter class="solr.StandardFilterFactory"/>
+      <filter class="solr.LowerCaseFilterFactory"/>
+   </analyzer>
+</fieldType> 
+
  </types>
   
   <!-- Similarity is the scoring routine for each document vs. a query.
