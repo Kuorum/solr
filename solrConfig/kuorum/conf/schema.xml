@@ -7,29 +7,35 @@
       or Solr won't start. _version_ and update log are required for SolrCloud
    --> 
    <field name="_version_" 		type="long" 	indexed="true" stored="true"/>
-   <field name="id"			type="string" 	indexed="true" stored="true" required="false" multiValued="false" />
+   <field name="id"			type="string" 	indexed="true" stored="true" required="true" multiValued="false" />
    <field name="_ts" 			type="long" 	indexed="true" stored="true" />
-        
-   <field name="name" 			type="text_general" indexed="true" stored="true"/>
-   <field name="language" 		type="string"	indexed="true" stored="true" />
-   <field name="email" 			type="string"	indexed="true" stored="true" />
-   <field name="username" 		type="string"	indexed="true" stored="true" />
 
-   <field name="enabled" 		type="boolean"	indexed="true" stored="true" />
-   <field name="accountExpired" 	type="boolean"	indexed="true" stored="true" />
-   <field name="accountLocked" 		type="boolean"	indexed="true" stored="true" />
+   <!--Object type: Post, Law, KuorumUser -->
+   <field name="type"			type="string"	indexed="true" stored="true" />
+   <!--Object subtype: Post=>History, Question, Purpose | User => Politician, Person, Organization | Law => Open, Close -->
+   <field name="subType"		type="string"	indexed="true" stored="true" />
+   <!--Object name: Post => Short title, Law => Short title, KuorumUser => Name + Surname -->
+   <field name="name" 			type="text_es" indexed="true" stored="true"/>
+   <!--Object text: Post => text, Law => description, KuorumUser => NULL -->
+   <field name="text" 			type="text_es" indexed="true" stored="true" required="false"/>
+   <!--Object text: Post => owner name, Law => null, KuorumUser => NULL -->
+   <field name="owner" 			type="string" indexed="true" stored="true" required="false"/>
+   <!--Object text: Post => law.hashtag, Law => hashtag, KuorumUser => NULL -->
+   <field name="hashtag"		type="string" 	indexed="true" stored="true" required="false"/>
 
-   <field name="relevantCommissions" 	type="string" 	indexed="true" stored="true" multiValued="true"/>
-   <field name="gender" 		type="string" 	indexed="true" stored="true" required="false" multiValued="false" />
    <field name="dateCreated" 		type="date" 	indexed="true" stored="true"/>
 
 
-   <field name="name_autocomplete" 	type="autocomplete" 	indexed="true" stored="false" multiValued="true"/>
+   <field name="name_autocomplete" 	type="autocomplete" 		indexed="true" stored="true" multiValued="true"/>
+   <field name="autocomplete_es"	type="autocompleteType_es"	indexed="true" stored="true" multiValued="true"/>
 
 
    <!-- COPY FIELDS -->
    <copyField source="name" dest="name_autocomplete" maxChars="300"/>
-   <copyField source="username" dest="name_autocomplete" maxChars="300"/>
+   <copyField source="name" dest="autocomplete_es" maxChars="300"/>
+   <copyField source="hashtag" dest="autocomplete_es" maxChars="300"/>
+<!--   <copyField source="text" dest="autocomplete" maxChars="300"/> -->
+<!--   <copyField source="hashtag" dest="name_autocomplete" maxChars="300"/> -->
  </fields>
 
 
@@ -421,12 +427,33 @@
 
     <!-- AUTOCOMPLETE -->
 <fieldType class="solr.TextField" name="autocomplete" positionIncrementGap="100">
-<analyzer>
-      <tokenizer class="solr.StandardTokenizerFactory"/>
-      <filter class="solr.StandardFilterFactory"/>
-      <filter class="solr.LowerCaseFilterFactory"/>
+   <analyzer type="index">
+	<charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
+<!--	<tokenizer class="solr.LowerCaseTokenizerFactory"/> -->
+        <tokenizer class="solr.KeywordTokenizerFactory" />
+        <filter class="solr.LowerCaseFilterFactory" />
+	<filter class="solr.LengthFilterFactory" min="3" max="15"/>
+      <!--<filter class="solr.EdgeNGramFilterFactory" minGramSize="2" maxGramSize="15" side="front"/> -->
+	<filter class="solr.ShingleFilterFactory" maxShingleSize="3" outputUnigrams="true"/>
+   </analyzer>
+   <analyzer type="query">
+	<charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
+<!--	<tokenizer class="solr.LowerCaseTokenizerFactory"/>  -->
+	<tokenizer class="solr.KeywordTokenizerFactory" />
+	<filter class="solr.LowerCaseFilterFactory"/>
    </analyzer>
 </fieldType> 
+    <!-- AUTOCOMPLETE 2-->
+<fieldType class="solr.TextField" name="autocompleteType_es" positionIncrementGap="100">
+	<analyzer> 
+                <tokenizer class="solr.StandardTokenizerFactory"/> 
+        	<filter class="solr.LowerCaseFilterFactory"/> 
+        	<filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_es.txt" />
+         	<filter class="solr.ShingleFilterFactory" maxShingleSize="4" outputUnigrams="false"/> 
+		<filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
+       	</analyzer> 
+</fieldType> 
+
 
  </types>
   

@@ -1,42 +1,4 @@
 
-# IDE support files
-/.classpath
-/.launch
-/.project
-/.settings
-/*.launch
-/*.tmproj
-/ivy*
-/eclipse
-/.idea
-*.iml
-/.sonar
+# Data solr  
+/kuorum/data
 
-# Config files
-src/java/development_config.properties
-src/java/test_config.properties
-src/java/production_config.properties
-
-covertura.ser
-
-# logs
-/stacktrace.log
-/test/reports
-/logs
-
-# project release file
-/*.war
-
-# plugin release file
-/*.zip
-
-# older plugin install locations
-/plugins
-/web-app/plugins
-/web-app/WEB-INF/classes
-
-# "temporary" build files
-/target
-
-# other
-*.iws
