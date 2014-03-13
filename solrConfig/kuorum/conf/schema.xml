@@ -18,10 +18,12 @@
    <field name="name" 			type="text_es" indexed="true" stored="true"/>
    <!--Object text: Post => text, Law => description, KuorumUser => NULL -->
    <field name="text" 			type="text_es" indexed="true" stored="true" required="false"/>
-   <!--Object text: Post => owner name, Law => null, KuorumUser => NULL -->
+   <!--Object Owner: Post => owner name, Law => null, KuorumUser => NULL -->
    <field name="owner" 			type="string" indexed="true" stored="true" required="false"/>
-   <!--Object text: Post => law.hashtag, Law => hashtag, KuorumUser => NULL -->
+   <!--Object hashtag: Post => law.hashtag, Law => hashtag, KuorumUser => NULL -->
    <field name="hashtag"		type="string" 	indexed="true" stored="true" required="false"/>
+   <!--If the post is a victory -->
+   <field name="victory"		type="boolean" 	indexed="true" stored="true" required="false"/>
 
    <field name="dateCreated" 		type="date" 	indexed="true" stored="true"/>
 

@@ -1,4 +1,5 @@
 
 # Data solr  
-/solrconfig/kuorum/data
 
+/solrconfig/kuorum/data/*
+/solrconfig/kuorum/data/**
