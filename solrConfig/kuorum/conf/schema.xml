@@ -46,11 +46,13 @@
    <!-- COPY FIELDS -->
    <copyField source="name" dest="autocomplete" maxChars="300"/>
    <copyField source="hashtag" dest="autocomplete" maxChars="300"/>
+   <copyField source="hashtagLaw" dest="autocomplete" maxChars="300"/>
    <copyField source="text" dest="autocomplete" maxChars="300"/>
 
-   <copyField source="name" 	dest="spell_es" maxChars="300"/>
-   <copyField source="text" 	dest="spell_es" maxChars="300"/>
-   <copyField source="hashtag" 	dest="spell_es" maxChars="300"/>
+   <copyField source="name" 	  dest="spell_es" maxChars="300"/>
+   <copyField source="text" 	  dest="spell_es" maxChars="300"/>
+   <copyField source="hashtag" 	  dest="spell_es" maxChars="300"/>
+   <copyField source="hashtagLaw" dest="spell_es" maxChars="300"/>
  </fields>
 
 
@@ -453,6 +455,7 @@
                 <!--tokenizer class="solr.StandardTokenizerFactory"/--> 
                 <tokenizer class="solr.WhitespaceTokenizerFactory"/> 
         	<filter class="solr.LowerCaseFilterFactory"/> 
+		<filter class="solr.PatternReplaceFilterFactory" pattern="\0023" replacement="_SHARP_" replace="all" />
 <!--        	<filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_es.txt" format="snowball"/>  -->
          	<filter class="solr.ShingleFilterFactory" maxShingleSize="4" outputUnigrams="true"/> 
 		<filter class="solr.RemoveDuplicatesTokenFilterFactory"/>
