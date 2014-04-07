@@ -863,6 +863,7 @@
 	<str name="qf">hashtag^5.0 hashtagLaw^2.0 name^1.0 owner^0.8 text^0.3</str>
 	<str name="hl">true</str>
 	<str name="hl.fl">*</str>
+        <str name="hl.fragsize">300</str>
 
 	<str name="facet">true</str>
 	<str name="facet.field">type</str>
