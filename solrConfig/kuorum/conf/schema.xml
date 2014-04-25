@@ -28,6 +28,10 @@
    <!--If the post is a victory -->
    <field name="victory"		type="boolean" 	indexed="true" stored="true" required="false"/>
 
+   <field name="urlImage"		type="string"  indexed="false" stored="true" required="false"/>
+   <!-- KuorumUser role -->
+   <field name="role"			type="string"  indexed="true" stored="true" required="false"/>
+
    <!-- REGION -->
    <!-- Region name: Post=> law.region.name | User => region.name / Organization | law => region.name -->
    <field name="regionName"		type="string"  indexed="true" stored="true" required="true"/>
