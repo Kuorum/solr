@@ -31,6 +31,8 @@
    <field name="urlImage"		type="string"  indexed="false" stored="true" required="false"/>
    <!-- KuorumUser role -->
    <field name="role"			type="string"  indexed="true" stored="true" required="false"/>
+   <!-- KuorumUser gender -->
+   <field name="gender"			type="string"  indexed="true" stored="true" required="false"/>
 
    <!-- REGION -->
    <!-- Region name: Post=> law.region.name | User => region.name / Organization | law => region.name -->
