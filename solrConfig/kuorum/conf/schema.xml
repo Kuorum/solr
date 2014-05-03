@@ -21,7 +21,8 @@
    <!--Object text: Post => text, Law => description, KuorumUser => NULL -->
    <field name="text" 			type="text_es" indexed="true" stored="true" required="false"/>
    <!--Object Owner: Post => owner name, Law => null, KuorumUser => NULL -->
-   <field name="owner" 			type="string" indexed="true" stored="true" required="false"/>
+   <field name="owner" 			type="text_general" indexed="true" stored="true" required="false"/>
+   <field name="ownerId"		type="string" indexed="false" stored="true" required="false"/>
    <!--Object hashtagLaw: Post => law.hashtag, Law => hashtag, KuorumUser => NULL -->
    <field name="hashtag"		type="hashtagType" indexed="true" stored="true" required="false"/>
    <field name="hashtagLaw"		type="hashtagType" indexed="true" stored="true" required="false"/>
