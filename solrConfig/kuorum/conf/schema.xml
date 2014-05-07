@@ -37,7 +37,7 @@
 
    <!-- REGION -->
    <!-- Region name: Post=> law.region.name | User => region.name / Organization | law => region.name -->
-   <field name="regionName"		type="string"  indexed="true" stored="true" required="true"/>
+   <field name="regionName"		type="text_general"  indexed="true" stored="true" required="true"/>
    <!-- Region iso3166_2: Post=> law.region.iso31662_2 | User => region.iso3166_2 | law => region.iso3166_2 -->
    <field name="regionIso3166_2"	type="string"  indexed="true" stored="true" required="true"/>
    <!-- Postal Code: Post=> null | User => user postal code | law => null -->
@@ -49,6 +49,8 @@
    <field name="autocomplete"		type="autocompleteType"	indexed="true" stored="true" multiValued="true"/>
    <field name="spell_es"		type="spellType_es"		indexed="true" stored="true" multiValued="true"/>
 
+   <!-- GROUP FIELD -->
+   <dynamicField name="*_group" type="string" indexed="true"  stored="true"/>
 
    <!-- COPY FIELDS -->
    <copyField source="name" dest="autocomplete" maxChars="300"/>
@@ -165,12 +167,14 @@
         <filter class="solr.SynonymFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true" expand="false"/>
         -->
         <filter class="solr.LowerCaseFilterFactory"/>
+	<filter class="solr.ASCIIFoldingFilterFactory"/>
       </analyzer>
       <analyzer type="query">
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
         <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
         <filter class="solr.LowerCaseFilterFactory"/>
+	<filter class="solr.ASCIIFoldingFilterFactory"/>
       </analyzer>
     </fieldType>
 
