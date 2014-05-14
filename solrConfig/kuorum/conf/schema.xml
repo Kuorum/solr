@@ -34,6 +34,9 @@
    <field name="role"			type="string"  indexed="true" stored="true" required="false"/>
    <!-- KuorumUser gender -->
    <field name="gender"			type="string"  indexed="true" stored="true" required="false"/>
+   <!-- Politician: Institution Name  -->
+   <field name="institutionName"	type="text_general"  indexed="true" stored="true" required="false"/>
+
 
    <!-- REGION -->
    <!-- Region name: Post=> law.region.name | User => region.name / Organization | law => region.name -->
