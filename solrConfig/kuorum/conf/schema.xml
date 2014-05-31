@@ -34,7 +34,7 @@
    <field name="role"			type="string"  indexed="true" stored="true" required="false"/>
    <!-- KuorumUser gender -->
    <field name="gender"			type="string"  indexed="true" stored="true" required="false"/>
-   <!-- Politician: Institution Name  -->
+   <!-- Politician: institution.name | Law: institution.name | Post: law.insititution.name-->
    <field name="institutionName"	type="text_general"  indexed="true" stored="true" required="false"/>
 
 
