@@ -1694,6 +1694,15 @@
       <processor class="solr.RunUpdateProcessorFactory" />
     </updateRequestProcessorChain>
   -->
+
+<!-- STRIP HTML TAGS on KUORUM -->
+ <updateRequestProcessorChain name="html-strip-features" default="true"> 
+    <processor class="solr.HTMLStripFieldUpdateProcessorFactory"> 
+      <str name="fieldName">text</str> 
+    </processor> 
+    <processor class="solr.LogUpdateProcessorFactory" /> 
+    <processor class="solr.RunUpdateProcessorFactory" /> 
+  </updateRequestProcessorChain> 
  
   <!-- Response Writers
 
