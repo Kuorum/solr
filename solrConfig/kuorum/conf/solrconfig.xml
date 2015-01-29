@@ -860,7 +860,7 @@
        <str name="indent">true</str>
        <str name="df">text</str>
 	<str name="defType">edismax</str>
-	<str name="qf">hashtag^5.0 hashtagLaw^2.0 name^1.0 owner^0.8 text^0.3</str>
+	<str name="qf">hashtag^5.0 hashtagProject^2.0 name^1.0 owner^0.8 text^0.3</str>
 	<str name="hl">true</str>
 	<str name="hl.fl">*</str>
         <str name="hl.fragsize">300</str>
@@ -894,7 +894,7 @@
         <str name="indent">true</str>
         <str name="df">text</str>
 	<str name="defType">edismax</str>
-	<str name="qf">hashtag^5.0 hashtagLaw^2.0 name^1.0 owner^0.8 text^0.3</str>
+	<str name="qf">hashtag^5.0 hashtagProject^2.0 name^1.0 owner^0.8 text^0.3</str>
 	<str name="facet">true</str>
 	<str name="facet.field">autocomplete</str>
 	<str name="facet.limit">10</str>
@@ -905,7 +905,7 @@
       <str name="df">text</str>
       <str name="wt">json</str>
 	<str name="defType">edismax</str>
-	<str name="qf">hashtag^5.0 hashtagLaw^2.0 name^1.0 owner^0.8 text^0.3</str>
+	<str name="qf">hashtag^5.0 hashtagProject^2.0 name^1.0 owner^0.8 text^0.3</str>
 	<str name="facet">true</str>
       <!-- Solr will use suggestions from both the 'default' spellchecker
            and from the 'wordbreak' spellchecker and combine them.

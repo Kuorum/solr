@@ -23,9 +23,9 @@
    <!--Object Owner: Post => owner name, Law => null, KuorumUser => NULL -->
    <field name="owner" 			type="text_general" indexed="true" stored="true" required="false"/>
    <field name="ownerId"		type="string" indexed="false" stored="true" required="false"/>
-   <!--Object hashtagLaw: Post => law.hashtag, Law => hashtag, KuorumUser => NULL -->
+   <!--Object hashtagProject: Post => project.hashtag, Law => hashtag, KuorumUser => NULL -->
    <field name="hashtag"		type="hashtagType" indexed="true" stored="true" required="false"/>
-   <field name="hashtagLaw"		type="hashtagType" indexed="true" stored="true" required="false"/>
+   <field name="hashtagProject"		type="hashtagType" indexed="true" stored="true" required="false"/>
    <!--If the post is a victory -->
    <field name="victory"		type="boolean" 	indexed="true" stored="true" required="false"/>
 
@@ -34,16 +34,16 @@
    <field name="role"			type="string"  indexed="true" stored="true" required="false"/>
    <!-- KuorumUser gender -->
    <field name="gender"			type="string"  indexed="true" stored="true" required="false"/>
-   <!-- Politician: institution.name | Law: institution.name | Post: law.insititution.name-->
+   <!-- Politician: institution.name | project: institution.name | Post: project.insititution.name-->
    <field name="institutionName"	type="text_general"  indexed="true" stored="true" required="false"/>
 
 
    <!-- REGION -->
-   <!-- Region name: Post=> law.region.name | User => region.name / Organization | law => region.name -->
+   <!-- Region name: Post=> project.region.name | User => region.name / Organization | project => region.name -->
    <field name="regionName"		type="text_general"  indexed="true" stored="true" required="true"/>
-   <!-- Region iso3166_2: Post=> law.region.iso31662_2 | User => region.iso3166_2 | law => region.iso3166_2 -->
+   <!-- Region iso3166_2: Post=> project.region.iso31662_2 | User => region.iso3166_2 | prooject => region.iso3166_2 -->
    <field name="regionIso3166_2"	type="string"  indexed="true" stored="true" required="true"/>
-   <!-- Postal Code: Post=> null | User => user postal code | law => null -->
+   <!-- Postal Code: Post=> null | User => user postal code | project => null -->
    <field name="postalCode"		type="string"  indexed="true" stored="true" required="false"/>
 
    <field name="dateCreated" 		type="date" 	indexed="true" stored="true"/>
@@ -58,13 +58,13 @@
    <!-- COPY FIELDS -->
    <copyField source="name" dest="autocomplete" maxChars="300"/>
    <copyField source="hashtag" dest="autocomplete" maxChars="300"/>
-   <copyField source="hashtagLaw" dest="autocomplete" maxChars="300"/>
+   <copyField source="hashtagProject" dest="autocomplete" maxChars="300"/>
    <copyField source="text" dest="autocomplete" maxChars="300"/>
 
    <copyField source="name" 	  dest="spell_es" maxChars="300"/>
    <copyField source="text" 	  dest="spell_es" maxChars="300"/>
    <copyField source="hashtag" 	  dest="spell_es" maxChars="300"/>
-   <copyField source="hashtagLaw" dest="spell_es" maxChars="300"/>
+   <copyField source="hashtagProject" dest="spell_es" maxChars="300"/>
  </fields>
 
 
