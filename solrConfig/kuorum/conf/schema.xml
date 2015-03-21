@@ -18,9 +18,9 @@
    <field name="commissions"		type="string"	indexed="true" stored="true" multiValued="true"/>
    <!--Object name: Post => Short title, Law => Short title, KuorumUser => Name + Surname -->
    <field name="name" 			type="text_es" indexed="true" stored="true"/>
-   <!--Object text: Post => text, Law => description, KuorumUser => NULL -->
+   <!--Object text: Post => text, Law => description, KuorumUser => user bio -->
    <field name="text" 			type="text_es" indexed="true" stored="true" required="false"/>
-   <!--Object Owner: Post => owner name, Law => null, KuorumUser => NULL -->
+   <!--Object Owner: Post => owner name, Law => owner name, KuorumUser => NULL -->
    <field name="owner" 			type="text_general" indexed="true" stored="true" required="false"/>
    <field name="ownerId"		type="string" indexed="false" stored="true" required="false"/>
    <!--Object hashtagProject: Post => project.hashtag, Law => hashtag, KuorumUser => NULL -->
