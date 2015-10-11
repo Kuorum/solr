@@ -23,9 +23,10 @@
    <!--Object Owner: Post => owner name, Law => owner name, KuorumUser => NULL -->
    <field name="owner" 			type="text_general" indexed="true" stored="true" required="false"/>
    <field name="ownerId"		type="string" indexed="false" stored="true" required="false"/>
-   <!--Object hashtagProject: Post => project.hashtag, Law => hashtag, KuorumUser => NULL -->
+   <!--Object hashtagProject: Post => project.hashtag, Law => hashtag, KuorumUser => tags -->
    <field name="hashtag"		type="hashtagType" indexed="true" stored="true" required="false"/>
    <field name="hashtagProject"		type="hashtagType" indexed="true" stored="true" required="false"/>
+   <field name="tags"			type="hashtagType" indexed="true" stored="true" required="false"  multiValued="true"/>
    <!--If the post is a victory -->
    <field name="victory"		type="boolean" 	indexed="true" stored="true" required="false"/>
 
@@ -38,7 +39,7 @@
    <field name="politicalPartyName"	type="text_general"  indexed="true" stored="true" required="false"/>
    <!-- Politician: politicalParty.id | project: owner.politicalParty.id | Post: project.owner.politicalParty.id-->
    <field name="politicalPartyId"	type="string"  indexed="true" stored="true" required="false"/>
-   <!-- DEPRECATED REMOVE ASP-->
+   <!-- DEPRECATED REMOVE ASAP-->
    <field name="institutionName"	type="text_general"  indexed="true" stored="true" required="false"/>
  
    <!-- Law relevance status -->
@@ -65,6 +66,7 @@
 
    <!-- COPY FIELDS -->
    <copyField source="name" dest="autocomplete" maxChars="300"/>
+   <copyField source="tags" dest="autocomplete" maxChars="300"/>
    <copyField source="hashtag" dest="autocomplete" maxChars="300"/>
    <copyField source="hashtagProject" dest="autocomplete" maxChars="300"/>
    <copyField source="text" dest="autocomplete" maxChars="300"/>
