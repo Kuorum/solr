@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataConfig>
+    <dataSource name="KuorumMongo" type="MongoDataSource" database="KuorumDev" host="localhost" port="27017"/>
+
+    <document name="kuorum">
+
+        <entity name="kuorumUser"
+                processor="MongoEntityProcessor"
+                query="{'authorities.authority':{$ne:'ROLE_INCOMPLETE_USER'}}"
+                collection="kuorumUser"
+                datasource="KuorumMongo"
+                transformer="script:transformKuorumUser" >
+        </entity>
+
+        <entity name="project"
+                processor="MongoEntityProcessor"
+                query="{published:true}"
+                collection="project"
+                datasource="KuorumMongo"
+                transformer="script:transformProject" >
+        </entity>
+
+        <entity name="post"
+                processor="MongoEntityProcessor"
+                query="{published:true}"
+                collection="post"
+                datasource="KuorumMongo"
+                transformer="script:transformPost" >
+        </entity>
+    </document>
+
+<script><![CDATA[
+        function transformKuorumUser(row){
+            row.put('id', row._id);
+            row.put('name', row.name);
+            row.put('type', row.userType);
+            row.put('subType', row.userType);
+            row.put('dateCreated', row.dateCreated);
+            row.put('commissions', row.relevantCommissions);
+            row.put('tags', row.tags);
+            getRegionNameFromUser(row);
+            getAvatar(row);
+            getRole(row);
+            getGender(row);
+            row.put('text', row.bio);
+            row.put('kuorumRelevance', 1); //TODO: Recover from other collection
+            row.put('numberPeopleInterestedFor', 100); //TODO: recover from other collection
+            return row;
+        }
+
+        function getRole(kuorumUser){
+            if (kuorumUser.gamification != null && kuorumUser.gamification.activeRole.activeRole!= null){
+                kuorumUser.put('role',kuorumUser.gamification.activeRole.activeRole)
+            }else{
+                kuorumUser.put('role','ROLE_DEFAULT')
+            }
+        }
+        function getGender(kuorumUser){
+            if (kuorumUser.personalData != null && kuorumUser.personalData.gender != null){
+                kuorumUser.put("gender", kuorumUser.personalData.gender);
+            }else{
+                kuorumUser.put("gender", "FEMALE");
+            }
+        }
+
+        function getAvatar(kuorumUser){
+            if (kuorumUser.avatar != null){
+                kuorumUser.put("urlImage",kuorumUser.avatar.url);
+            }
+        }
+	function getRegionNameFromUser(kuorumUser){
+		var regionName ="";
+		var regionIso = "";
+		var postalCode = "";
+		if (kuorumUser.personalData == null || kuorumUser.personalData.province == null){
+                	//Usuarios de antigua web que se indexen
+                	regionName = "España"
+                	regionIso = "EU-ES"
+                	postalCode = "00000"
+            	}else{
+                	regionName = kuorumUser.personalData.province.name
+                	regionIso = kuorumUser.personalData.province.iso3166_2
+                	postalCode = kuorumUser.personalData.postalCode
+            	}
+
+		if (kuorumUser.professionalDetails != null && kuorumUser.professionalDetails.region != null){
+                	regionName = kuorumUser.professionalDetails.region.name
+                	regionIso = kuorumUser.professionalDetails.region.iso3166_2
+            	}
+ 		kuorumUser.put('regionName', regionName);
+		kuorumUser.put('regionIso3166_2', regionIso);
+		//kuorumUser.put('regionIso3166_2Length', regionIso.length());
+		kuorumUser.put('regionIso3166_2Length', 10);
+		kuorumUser.put('postalCode', postalCode);
+	}
+
+	function transformProject(project){
+	       	project.put('id',project._id);
+        	project.put('name',project.shortName);
+	       	project.put('type','PROJECT');
+		project.put('subType',project.status?'OPEN':'APPROVED'); //TODO: APPROVED is not correct
+		project.put('text',project.description);
+		project.put('dateCreated',project.dateCreated);
+		project.put('tags',[project.hashtag]);
+		project.put('hashtag',project.hashtag);
+		project.put('commissions',project.commissions);
+		project.put('regionName', project.region.name);
+		project.put('regionIso3166_2', project.region.iso3166_2);
+		project.put('urlImage', project.image?project.image.url:'');
+		project.put('ownerId',project.owner); // first ownerId because owner field is overwritten 
+		project.put('owner',project.indexMetaData.ownerName);
+		project.put('relevance', project.relevance);
+		project.put('deadLine',project.deadline);
+		project.put('kuorumRelevance', 0);
+		project.put('numberPeopleInterestedFor', project.peopleVotes.total);
+		project.put('regionIso3166_2Length',project.region.iso3166_2.length());
+		return project;
+	}
+
+	function transformPost(post){
+	       	post.put('id',post._id);
+        	post.put('name',post.title);
+	       	post.put('type','POST');
+		post.put('text',post.text);
+		post.put('dateCreated',post.dateCreated);
+		post.put('tags',[post.indexMetaData.hashtag]);
+		post.put('hashtagProject',post.indexMetaData.hashtag);
+		post.put('commissions',post.indexMetaData.commissions);
+		post.put('victory',post.victory);
+		post.put('regionName', post.indexMetaData.regionName);
+		post.put('regionIso3166_2', post.indexMetaData.regionIso3166_2);
+		post.put('regionIso3166_2Length',post.indexMetaData.regionIso3166_2.length());
+		post.put('urlImage', post.multimedia?post.multimedia.url:'');
+		post.put('ownerId',post.owner); // first ownerId because owner field is overwritten 
+		post.put('owner',post.indexMetaData.ownerName);
+		post.put('relevance', 0);
+		post.put('deadLine',post.deadline);
+		post.put('kuorumRelevance', 0);
+		post.put('numberPeopleInterestedFor', post.numVotes);
+		return post;
+	}
+        ]]></script>
+</dataConfig>
