@@ -33,7 +33,7 @@
         function transformKuorumUser(row){
             row.put('id', row.get('_id'));
             row.put('name', row.get('name'));
-            row.put('type', row.get('userType'));
+            row.put('type', getType(row));
             row.put('subType', row.get('userType'));
             row.put('dateCreated', row.get('dateCreated'));
             row.put('commissions', row.get('relevantCommissions'));
@@ -47,6 +47,14 @@
             row.put('numberPeopleInterestedFor', 100); //TODO: recover from other collection
             return row;
         }
+
+	function getType(kuorumUser){
+	    var type = "KUORUM_USER";
+            if (kuorumUser.get('userType')=="POLITICIAN"){
+                type = "POLITICIAN";
+            }
+	    return type;
+	}
 
         function getRole(kuorumUser){
             if (kuorumUser.get('gamification') != null && kuorumUser.get('gamification').get('activeRole')!= null){
