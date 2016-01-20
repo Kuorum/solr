@@ -104,7 +104,7 @@
         }
  		kuorumUser.put('regionName', regionName);
 		kuorumUser.put('regionIso3166_2', regionIso);
-		kuorumUser.put('regionIso3166_2Length', regionIso.length());
+		kuorumUser.put('regionIso3166_2Length', regionIso.length);
 		kuorumUser.put('postalCode', postalCode);
 	}
 
