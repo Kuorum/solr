@@ -104,8 +104,7 @@
         }
  		kuorumUser.put('regionName', regionName);
 		kuorumUser.put('regionIso3166_2', regionIso);
-		kuorumUser.put('regionIso3166_2Length', regionIso.length);
-		kuorumUser.put('regionIso3166_2Length', 10);
+		kuorumUser.put('regionIso3166_2Length', regionIso.length());
 		kuorumUser.put('postalCode', postalCode);
 	}
 
@@ -128,7 +127,7 @@
 		project.put('deadLine',project.get('deadline'));
 		project.put('kuorumRelevance', 0);
 		project.put('numberPeopleInterestedFor', project.get('peopleVotes').get('total'));
-		project.put('regionIso3166_2Length',project.get('region').get('iso3166_2').length);
+		project.put('regionIso3166_2Length',project.get('region').get('iso3166_2').length());
 		return project;
 	}
 
@@ -144,7 +143,7 @@
 		post.put('victory',post.get('victory'));
 		post.put('regionName', post.get('indexMetaData').get('regionName'));
 		post.put('regionIso3166_2', post.get('indexMetaData').get('regionIso3166_2'));
-		post.put('regionIso3166_2Length',post.get('indexMetaData').get('regionIso3166_2').length);
+		post.put('regionIso3166_2Length',post.get('indexMetaData').get('regionIso3166_2').length());
 		post.put('urlImage', post.get('multimedia')?post.get('multimedia').get('url'):'');
 		post.put('ownerId',post.get('owner')); // first ownerId because owner field is overwritten
 		post.put('owner',post.get('indexMetaData').get('ownerName'));
