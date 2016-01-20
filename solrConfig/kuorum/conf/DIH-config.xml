@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dataConfig>
     <dataSource name="KuorumMongo" type="MongoDataSource" database="Kuorum" host="localhost" port="27017"/>
+    <propertyWriter dateFormat="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" type="SimplePropertiesWriter" />
 
     <document name="kuorum">
 
         <entity name="kuorumUser"
                 processor="MongoEntityProcessor"
                 query="{'authorities.authority':{$ne:'ROLE_INCOMPLETE_USER'}}"
+		deltaImportQuery="{'_id':{$oid:'${dih.delta._id}'}}"
+                deltaQuery="{lastUpdated:{$gt:{$date:'${dih.last_index_time}'}}} "
                 collection="kuorumUser"
                 datasource="KuorumMongo"
                 transformer="script:transformKuorumUser" >
@@ -15,6 +18,8 @@
         <entity name="project"
                 processor="MongoEntityProcessor"
                 query="{published:true}"
+		deltaImportQuery="{'_id':{$oid:'${dih.delta._id}'}}"
+                deltaQuery="{lastUpdated:{$gt:{$date:'${dih.last_index_time}'}}} "
                 collection="project"
                 datasource="KuorumMongo"
                 transformer="script:transformProject" >
@@ -23,6 +28,8 @@
         <entity name="post"
                 processor="MongoEntityProcessor"
                 query="{published:true}"
+		deltaImportQuery="{'_id':{$oid:'${dih.delta._id}'}}"
+                deltaQuery="{lastUpdated:{$gt:{$date:'${dih.last_index_time}'}}} "
                 collection="post"
                 datasource="KuorumMongo"
                 transformer="script:transformPost" >
