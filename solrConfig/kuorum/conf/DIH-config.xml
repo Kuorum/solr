@@ -50,7 +50,7 @@
             getRole(row);
             getGender(row);
             row.put('text', row.get('bio'));
-            row.put('kuorumRelevance', 1); //TODO: Recover from other collection
+            row.put('kuorumRelevance', row.get('relevance')); //TODO: Recover from other collection
             row.put('numberPeopleInterestedFor', 100); //TODO: recover from other collection
             return row;
         }
