@@ -44,7 +44,7 @@
             row.put('subType', row.get('userType'));
             row.put('dateCreated', row.get('dateCreated'));
             row.put('commissions', row.get('relevantCommissions'));
-            row.put('tags', row.get('tags'));
+	    getTags(row);
             getRegionNameFromUser(row);
             getAvatar(row);
             getRole(row);
@@ -61,6 +61,14 @@
                 type = "POLITICIAN";
             }
 	    return type;
+	}
+
+	function getTags(kuorumUser){
+		if (kuorumUser.get('ideology') !=null && kuorumUser.get('ideology').get('supportedCauses')){
+			kuorumUser.put('tags',kuorumUser.get('ideology').get('supportedCauses'))
+		}else{
+			kuorumUser.put('tags',[])
+		}
 	}
 
         function getRole(kuorumUser){
