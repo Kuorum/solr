@@ -44,13 +44,14 @@
             row.put('subType', row.get('userType'));
             row.put('dateCreated', row.get('dateCreated'));
             row.put('commissions', row.get('relevantCommissions'));
-	    getTags(row);
+	        getTags(row);
             getRegionNameFromUser(row);
             getAvatar(row);
             getRole(row);
             getGender(row);
+            getPoliticianInfo(row);
             row.put('text', row.get('bio'));
-            row.put('kuorumRelevance', row.get('relevance')); //TODO: Recover from other collection
+            row.put('kuorumRelevance', row.get('relevance'));
             row.put('numberPeopleInterestedFor', 100); //TODO: recover from other collection
             return row;
         }
@@ -62,6 +63,14 @@
             }
 	    return type;
 	}
+
+    function getPoliticianInfo(kuorumUser){
+        var professionalDetailsField = "professionalDetails";
+        if (kuorumUser.get(professionalDetailsField) !=null){
+            var politicalPartyName = kuorumUser.get(professionalDetailsField).get('politicalParty')
+            if (politicalPartyName!= null){kuorumUser.put('politicalPartyName',politicalPartyName)}
+		}
+    }
 
 	function getTags(kuorumUser){
 		if (kuorumUser.get('ideology') !=null && kuorumUser.get('ideology').get('supportedCauses')){
