@@ -23,7 +23,7 @@
    <!--Object Owner: Post => owner name, Law => owner name, KuorumUser => NULL -->
    <field name="owner" 			type="text_general" indexed="true" stored="true" required="false"/>
    <field name="ownerId"		type="string" indexed="false" stored="true" required="false"/>
-   <!--Object hashtagProject: Post => project.hashtag, Law => hashtag, KuorumUser => tags -->
+   <!--Object hashtagProject: Post => project.hashtag, Law => hashtag, KuorumUser => alias -->
    <field name="hashtag"		type="hashtagType" indexed="true" stored="true" required="false"/>
    <field name="hashtagProject"		type="hashtagType" indexed="true" stored="true" required="false"/>
    <field name="tags"			type="hashtagType" indexed="true" stored="true" required="false"  multiValued="true"/>

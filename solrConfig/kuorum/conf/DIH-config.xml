@@ -44,7 +44,8 @@
             row.put('subType', row.get('userType'));
             row.put('dateCreated', row.get('dateCreated'));
             row.put('commissions', row.get('relevantCommissions'));
-	        getTags(row);
+	    row.put('hashtag', row.get('alias'));  
+	    getTags(row);
             getRegionNameFromUser(row);
             getAvatar(row);
             getRole(row);
