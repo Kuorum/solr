@@ -104,30 +104,38 @@
 	function getRegionNameFromUser(kuorumUser){
 		var regionName ="";
 		var regionIso = "";
-		var postalCode = "";
 		var regionIso3166_2Length = 0;
+
+		var constituencyIso = "";
+		var constituencyIsoLength = 0;
 		if (kuorumUser.get('personalData') == null || kuorumUser.get('personalData').get('province') == null){
             //Usuarios de antigua web que se indexen
             regionName = "España"
             regionIso = "EU-ES"
-            postalCode = "00000"
-	    regionIso3166_2Length = 5
+	        regionIso3166_2Length = 5
         }else{
             regionName = kuorumUser.get('personalData').get('province')
             regionIso = kuorumUser.get('personalData').get('provinceCode')
-            postalCode = kuorumUser.get('personalData').get('postalCode')
-	    regionIso3166_2Length = regionIso.length()
+	        regionIso3166_2Length = regionIso.length()
         }
 
 		if (kuorumUser.get('professionalDetails') != null && kuorumUser.get('professionalDetails').get('region') != null){
             regionName = kuorumUser.get('professionalDetails').get('region').get('name')
             regionIso = kuorumUser.get('professionalDetails').get('region').get('iso3166_2')
-	    regionIso3166_2Length = regionIso.length()
+	        regionIso3166_2Length = regionIso.length()
         }
+
+        if (kuorumUser.get('professionalDetails') != null && kuorumUser.get('professionalDetails').get('constituency') != null){
+            regionName = kuorumUser.get('professionalDetails').get('constituency').get('name')
+            constituencyIso = kuorumUser.get('professionalDetails').get('constituency').get('iso3166_2')
+	        constituencyIsoLength = constituencyIso.length()
+        }
+
  		kuorumUser.put('regionName', regionName);
-		kuorumUser.put('regionIso3166_2', regionIso);
+		kuorumUser.put('regionIso3166_2', regionIso.replace(/-/g, ''));
 		kuorumUser.put('regionIso3166_2Length', regionIso3166_2Length);
-		kuorumUser.put('postalCode', postalCode);
+		kuorumUser.put('constituencyIso3166_2', constituencyIso.replace(/-/g, ''));
+		kuorumUser.put('constituencyIso3166_2Length', constituencyIsoLength);
 	}
 
 	function transformProject(project){

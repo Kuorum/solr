@@ -53,8 +53,10 @@
    <!-- Region iso3166_2: Post=> project.region.iso31662_2 | User => region.iso3166_2 | prooject => region.iso3166_2 -->
    <field name="regionIso3166_2"	type="string"  indexed="true" stored="true" required="true"/>
    <field name="regionIso3166_2Length"	type="int"  indexed="true" stored="true" required="true"/>
-   <!-- Postal Code: Post=> null | User => user postal code | project => null -->
-   <field name="postalCode"		type="string"  indexed="true" stored="true" required="false"/>
+
+     <!-- constituency iso3166_2: Post=> null | User => professionalDetails.constituency.iso3166_2 | prooject => null -->
+     <field name="constituencyIso3166_2"	type="string"  indexed="true" stored="true" required="false"/>
+     <field name="constituencyIso3166_2Length"	type="int"  indexed="true" stored="true" required="false"/>
 
    <field name="dateCreated" 		type="date" 	indexed="true" stored="true"/>
 
@@ -75,7 +77,8 @@
    <copyField source="tags" dest="autocomplete" maxChars="300"/>
    <copyField source="hashtag" dest="autocomplete" maxChars="300"/>
    <copyField source="hashtagProject" dest="autocomplete" maxChars="300"/>
-   <copyField source="text" dest="autocomplete" maxChars="300"/>
+   <copyField source="politicalPartyName" dest="autocomplete" maxChars="300"/>
+   <!--<copyField source="text" dest="autocomplete" maxChars="300"/>-->
 
    <copyField source="name" 	  dest="spell_es" maxChars="300"/>
    <copyField source="text" 	  dest="spell_es" maxChars="300"/>
