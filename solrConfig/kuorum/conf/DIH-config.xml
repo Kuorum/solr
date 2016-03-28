@@ -132,9 +132,9 @@
         }
 
  		kuorumUser.put('regionName', regionName);
-		kuorumUser.put('regionIso3166_2', regionIso.replace(/-/g, ''));
+		kuorumUser.put('regionIso3166_2', regionIso.replace('-', ''));
 		kuorumUser.put('regionIso3166_2Length', regionIso3166_2Length);
-		kuorumUser.put('constituencyIso3166_2', constituencyIso.replace(/-/g, ''));
+		kuorumUser.put('constituencyIso3166_2', constituencyIso.replace('-', ''));
 		kuorumUser.put('constituencyIso3166_2Length', constituencyIsoLength);
 	}
 
