@@ -15,25 +15,25 @@
                 transformer="script:transformKuorumUser" >
         </entity>
 
-        <entity name="project"
-                processor="MongoEntityProcessor"
-                query="{published:true}"
-		deltaImportQuery="{'_id':{$oid:'${dih.delta._id}'}}"
-                deltaQuery="{lastUpdated:{$gt:{$date:'${dih.last_index_time}'}}} "
-                collection="project"
-                datasource="KuorumMongo"
-                transformer="script:transformProject" >
-        </entity>
+        <!--<entity name="project"-->
+                <!--processor="MongoEntityProcessor"-->
+                <!--query="{published:true}"-->
+		<!--deltaImportQuery="{'_id':{$oid:'${dih.delta._id}'}}"-->
+                <!--deltaQuery="{lastUpdated:{$gt:{$date:'${dih.last_index_time}'}}} "-->
+                <!--collection="project"-->
+                <!--datasource="KuorumMongo"-->
+                <!--transformer="script:transformProject" >-->
+        <!--</entity>-->
 
-        <entity name="post"
-                processor="MongoEntityProcessor"
-                query="{published:true}"
-		deltaImportQuery="{'_id':{$oid:'${dih.delta._id}'}}"
-                deltaQuery="{lastUpdated:{$gt:{$date:'${dih.last_index_time}'}}} "
-                collection="post"
-                datasource="KuorumMongo"
-                transformer="script:transformPost" >
-        </entity>
+        <!--<entity name="post"-->
+                <!--processor="MongoEntityProcessor"-->
+                <!--query="{published:true}"-->
+		<!--deltaImportQuery="{'_id':{$oid:'${dih.delta._id}'}}"-->
+                <!--deltaQuery="{lastUpdated:{$gt:{$date:'${dih.last_index_time}'}}} "-->
+                <!--collection="post"-->
+                <!--datasource="KuorumMongo"-->
+                <!--transformer="script:transformPost" >-->
+        <!--</entity>-->
     </document>
 
 <script><![CDATA[
