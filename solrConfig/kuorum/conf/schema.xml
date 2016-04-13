@@ -508,8 +508,9 @@
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.PatternReplaceFilterFactory" pattern="(#)([a-z0-9]*)" replacement="_SHARP_$2" replace="all" />
          <filter class="solr.TrimFilterFactory"/>
-		<!--filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1"
-			catenateWords="1" catenateNumbers="1" catenateAll="0" splitOnCaseChange="1" types="wdfftypes.txt"/-->
+        <!--<filter class="solr.NGramFilterFactory" minGramSize="1" maxGramSize="5"/>-->
+		<!--<filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="2"-->
+			<!--catenateWords="2" catenateNumbers="2" catenateAll="0" splitOnCaseChange="1" types="wdfftypes.txt"/>-->
             	<!--filter class="solr.ASCIIFoldingFilterFactory"/-->
 
             	<!--<filter class="solr.ShingleFilterFactory" outputUnigramsIfNoShingles="true" maxShingleSize="3" outputUnigrams="true"/>-->
