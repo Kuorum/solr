@@ -1328,11 +1328,22 @@
 
 	<lst name="spellchecker">
       		<str name="name">suggest</str>
+
+            <!--<str name="dictionaryImpl">org.apache.solr.spelling.suggest.DocumentExpressionDictionaryFactory</str>-->
+        <!--<str name="field">relevance</str>-->
+        <!--<str name="weightExpression">((relevance * 2) + ln(popularity))</str>-->
+        <!--<str name="sortField">weight</str>-->
+
       		<str name="classname">org.apache.solr.spelling.suggest.Suggester</str>
       		<!--<str name="lookupImpl">org.apache.solr.spelling.suggest.tst.TSTLookupFactory</str>-->
       		<!--<str name="lookupImpl">org.apache.solr.spelling.suggest.jaspell.JaspellLookupFactory</str>-->
-      		<str name="lookupImpl">org.apache.solr.spelling.suggest.fst.WFSTLookupFactory</str>
-      		<!--<str name="lookupImpl">org.apache.solr.spelling.suggest.fst.AnalyzingInfixLookupFactory</str>-->
+      		<!--<str name="lookupImpl">org.apache.solr.spelling.suggest.fst.WFSTLookupFactory</str>-->
+      		<str name="lookupImpl">org.apache.solr.spelling.suggest.fst.FuzzyLookupFactory</str>
+        <bool name="preserveSep">false</bool>
+        <bool name="exactMatchFirst">true</bool>
+        <str name="suggestAnalyzerFieldType">autocompleteType</str>
+
+        <!--<str name="lookupImpl">org.apache.solr.spelling.suggest.fst.AnalyzingInfixLookupFactory</str>-->
       		<str name="field">autocomplete</str>  <!-- the indexed field to derive suggestions from -->
       		<str name="weightField">relevance</str>  <!-- wight for suggestions -->
       		<float name="threshold">0.00005</float>
