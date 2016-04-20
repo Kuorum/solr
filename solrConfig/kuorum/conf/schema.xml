@@ -36,7 +36,7 @@
    <!-- KuorumUser gender -->
    <field name="gender"			type="string"  indexed="true" stored="true" required="false"/>
    <!-- Politician: politicalParty.name | project: owner.politicalParty.name | Post: project.owner.politicalParty.name-->
-   <field name="politicalPartyName"	type="text_general"  indexed="true" stored="true" required="false"/>
+   <field name="politicalPartyName"	type="string"  indexed="true" stored="true" required="false"/>
    <!-- Politician: politicalParty.id | project: owner.politicalParty.id | Post: project.owner.politicalParty.id-->
    <field name="politicalPartyId"	type="string"  indexed="true" stored="true" required="false"/>
    <!-- DEPRECATED REMOVE ASAP-->
