@@ -1,0 +1,11 @@
+#some test synonym mappings unlikely to appear in real input text
+bildu => eh bildu
+grupo socialista, psoe, soe, partido socialista obrero español, socialistas => psoe
+grupo popular, pp, partido popular, populares => partido popular
+toris => conservative
+iu => izquierda unida
+ciudadans => ciudadanos
+upn => union del pueblo navarro
+eaj, pnv, eaj-pnv => Partido nacionalista vasco
+
+

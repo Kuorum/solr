@@ -36,7 +36,7 @@
    <!-- KuorumUser gender -->
    <field name="gender"			type="string"  indexed="true" stored="true" required="false"/>
    <!-- Politician: politicalParty.name | project: owner.politicalParty.name | Post: project.owner.politicalParty.name-->
-   <field name="politicalPartyName"	type="string"  indexed="true" stored="true" required="false"/>
+   <field name="politicalPartyName"	type="text_politicalParty"  indexed="true" stored="true" required="false"/>
    <!-- Politician: politicalParty.id | project: owner.politicalParty.id | Post: project.owner.politicalParty.id-->
    <field name="politicalPartyId"	type="string"  indexed="true" stored="true" required="false"/>
    <!-- DEPRECATED REMOVE ASAP-->
@@ -80,6 +80,7 @@
    <copyField source="politicalPartyName" dest="autocomplete" maxChars="300"/>
    <copyField source="regionName" dest="autocomplete" maxChars="300"/>
    <copyField source="institutionName" dest="autocomplete" maxChars="300"/>
+
    <!--<copyField source="text" dest="autocomplete" maxChars="300"/>-->
 
    <copyField source="name" 	  dest="spell_es" maxChars="300"/>
@@ -186,21 +187,36 @@
     <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
         <tokenizer class="solr.StandardTokenizerFactory"/>
-        <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
-        <!-- in this example, we will only use synonyms at query time
-        <filter class="solr.SynonymFilterFactory" synonyms="index_synonyms.txt" ignoreCase="true" expand="false"/>
-        -->
-        <filter class="solr.LowerCaseFilterFactory"/>
-	<filter class="solr.ASCIIFoldingFilterFactory"/>
+          <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+          <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
+          <filter class="solr.LowerCaseFilterFactory"/>
+          <filter class="solr.ASCIIFoldingFilterFactory"/>
       </analyzer>
       <analyzer type="query">
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
         <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="true"/>
         <filter class="solr.LowerCaseFilterFactory"/>
-	<filter class="solr.ASCIIFoldingFilterFactory"/>
+	    <filter class="solr.ASCIIFoldingFilterFactory"/>
       </analyzer>
     </fieldType>
+
+      <fieldType name="text_politicalParty" class="solr.TextField" positionIncrementGap="100">
+          <analyzer type="index">
+              <tokenizer class="solr.StandardTokenizerFactory"/>
+              <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+              <filter class="solr.LowerCaseFilterFactory"/>
+              <filter class="solr.ASCIIFoldingFilterFactory"/>
+              <filter class="solr.SynonymFilterFactory" synonyms="politicalPartiesSynonyms.txt" ignoreCase="true" expand="true"/>
+          </analyzer>
+          <analyzer type="query">
+              <tokenizer class="solr.StandardTokenizerFactory"/>
+              <filter class="solr.StopFilterFactory" ignoreCase="true" words="stopwords.txt" />
+              <filter class="solr.LowerCaseFilterFactory"/>
+              <filter class="solr.ASCIIFoldingFilterFactory"/>
+              <filter class="solr.SynonymFilterFactory" synonyms="politicalPartiesSynonyms.txt" ignoreCase="true" expand="false"/>
+          </analyzer>
+      </fieldType>
 
     <!-- A text field with defaults appropriate for English: it
          tokenizes with StandardTokenizer, removes English stop words
@@ -450,6 +466,8 @@
       <analyzer> 
 	<charFilter class="solr.HTMLStripCharFilterFactory"/>
         <tokenizer class="solr.StandardTokenizerFactory"/>
+          <filter class="solr.ASCIIFoldingFilterFactory" preserveOriginal="false"/>
+          <filter class="solr.SynonymFilterFactory" synonyms="synonyms.txt" ignoreCase="true" expand="false"/>
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_es.txt" format="snowball" />
         <filter class="solr.SpanishLightStemFilterFactory"/>
