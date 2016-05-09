@@ -1336,17 +1336,17 @@
         <!--<str name="sortField">weight</str>-->
 
       		<str name="classname">org.apache.solr.spelling.suggest.Suggester</str>
-      		<!--<str name="lookupImpl">org.apache.solr.spelling.suggest.tst.TSTLookupFactory</str>-->
+      		<str name="lookupImpl">org.apache.solr.spelling.suggest.tst.TSTLookupFactory</str>
       		<!--<str name="lookupImpl">org.apache.solr.spelling.suggest.jaspell.JaspellLookupFactory</str>-->
-      		<!--<str name="lookupImpl">org.apache.solr.spelling.suggest.fst.WFSTLookupFactory</str>-->
-      		<str name="lookupImpl">org.apache.solr.spelling.suggest.fst.FuzzyLookupFactory</str>
-        <bool name="preserveSep">false</bool>
-        <bool name="exactMatchFirst">true</bool>
-        <str name="suggestAnalyzerFieldType">autocompleteType</str>
+      		<!--<str name="lookupImpl">org.apache.solr.spelling.suggest.fst.WFSTLoo                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             kupFactory</str>-->
+      		<!--<str name="lookupImpl">org.apache.solr.spelling.suggest.fst.FuzzyLookupFactory</str>-->
+        <!--<bool name="preserveSep">true</bool>-->
+        <!--<bool name="exactMatchFirst">true</bool>-->
+        <!--<str name="suggestAnalyzerFieldType">autocompleteType</str>-->
 
         <!--<str name="lookupImpl">org.apache.solr.spelling.suggest.fst.AnalyzingInfixLookupFactory</str>-->
       		<str name="field">autocomplete</str>  <!-- the indexed field to derive suggestions from -->
-      		<str name="weightField">relevance</str>  <!-- wight for suggestions -->
+      		<str name="weightField">relevance</str>  <!-- weight for suggestions -->
       		<float name="threshold">0.00005</float>
       		<str name="buildOnCommit">true</str>
     	</lst>
