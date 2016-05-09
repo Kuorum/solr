@@ -7,7 +7,7 @@
 
         <entity name="kuorumUser"
                 processor="MongoEntityProcessor"
-                query="{'authorities.authority':{$ne:'ROLE_INCOMPLETE_USER'}, 'alias':{$exists:1}}"
+                query="{'authorities.authority':{$ne:'ROLE_INCOMPLETE_USER'}, }"
 		deltaImportQuery="{'_id':{$oid:'${dih.delta._id}'}}"
                 deltaQuery="{lastUpdated:{$gt:{$date:'${dih.last_index_time}'}}} "
                 collection="kuorumUser"
@@ -132,9 +132,9 @@
         }
 
  		kuorumUser.put('regionName', regionName);
-		kuorumUser.put('regionIso3166_2', regionIso.replaceAll('-', ''));
+		kuorumUser.put('regionIso3166_2', regionIso.replace('-', ''));
 		kuorumUser.put('regionIso3166_2Length', regionIso3166_2Length);
-		kuorumUser.put('constituencyIso3166_2', constituencyIso.replaceAll('-', ''));
+		kuorumUser.put('constituencyIso3166_2', constituencyIso.replace('-', ''));
 		kuorumUser.put('constituencyIso3166_2Length', constituencyIsoLength);
 	}
 
