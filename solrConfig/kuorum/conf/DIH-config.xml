@@ -7,7 +7,7 @@
 
         <entity name="kuorumUser"
                 processor="MongoEntityProcessor"
-                query="{'authorities.authority':{$ne:'ROLE_INCOMPLETE_USER'}, }"
+                query="{'authorities.authority':{$ne:'ROLE_INCOMPLETE_USER'}, alias:{$exists:1}}"
 		deltaImportQuery="{'_id':{$oid:'${dih.delta._id}'}}"
                 deltaQuery="{lastUpdated:{$gt:{$date:'${dih.last_index_time}'}}} "
                 collection="kuorumUser"
