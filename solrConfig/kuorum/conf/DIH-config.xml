@@ -59,9 +59,15 @@
 
 	function getType(kuorumUser){
 	    var type = "KUORUM_USER";
-            if (kuorumUser.get('userType')=="POLITICIAN"){
-                type = "POLITICIAN";
-            }
+        if (kuorumUser.get('userType')=="POLITICIAN"){
+            type = "POLITICIAN";
+        }
+        if (kuorumUser.get('userType')=="CANDIDATE"){
+            type = "CANDIDATE";
+        }
+        if (kuorumUser.get('userType')=="ORGANIZATION"){
+            type = "ORGANIZATION";
+        }
 	    return type;
 	}
 
