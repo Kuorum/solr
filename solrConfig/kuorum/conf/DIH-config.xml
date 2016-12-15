@@ -39,7 +39,7 @@
 <script><![CDATA[
         function transformKuorumUser(row){
             row.put('id', row.get('_id'));
-            row.put('name', row.get('name'));
+            row.put('name', getFullName(row));
             row.put('type', getType(row));
             row.put('subType', row.get('userType'));
             row.put('dateCreated', row.get('dateCreated'));
@@ -56,6 +56,15 @@
             row.put('numberPeopleInterestedFor', 100); //TODO: recover from other collection
             return row;
         }
+
+    function getFullName(kuorumUser){
+        var fullName = kuorumUser.get('name');
+        if (kuorumUser.get('surname') != null){
+            var fullName = kuorumUser.get('name') +' '+ kuorumUser.get('surname');
+        }
+        fullName = fullName.trim();
+        return fullName;
+    }
 
 	function getType(kuorumUser){
 	    var type = "KUORUM_USER";
