@@ -14,38 +14,16 @@
                 datasource="KuorumMongo"
                 transformer="script:transformKuorumUser" >
         </entity>
-
-        <!--<entity name="project"-->
-                <!--processor="MongoEntityProcessor"-->
-                <!--query="{published:true}"-->
-		<!--deltaImportQuery="{'_id':{$oid:'${dih.delta._id}'}}"-->
-                <!--deltaQuery="{lastUpdated:{$gt:{$date:'${dih.last_index_time}'}}} "-->
-                <!--collection="project"-->
-                <!--datasource="KuorumMongo"-->
-                <!--transformer="script:transformProject" >-->
-        <!--</entity>-->
-
-        <!--<entity name="post"-->
-                <!--processor="MongoEntityProcessor"-->
-                <!--query="{published:true}"-->
-		<!--deltaImportQuery="{'_id':{$oid:'${dih.delta._id}'}}"-->
-                <!--deltaQuery="{lastUpdated:{$gt:{$date:'${dih.last_index_time}'}}} "-->
-                <!--collection="post"-->
-                <!--datasource="KuorumMongo"-->
-                <!--transformer="script:transformPost" >-->
-        <!--</entity>-->
     </document>
 
 <script><![CDATA[
         function transformKuorumUser(row){
             row.put('id', row.get('_id'));
             row.put('name', getFullName(row));
-            row.put('type', getType(row));
-            row.put('subType', row.get('userType'));
+            row.put('type', "KUORUM_USER");
             row.put('dateCreated', row.get('dateCreated'));
-            row.put('commissions', row.get('relevantCommissions'));
-	    row.put('hashtag', row.get('alias'));  
-	    getTags(row);
+	        row.put('hashtag', row.get('alias'));
+	        getTags(row);
             getRegionNameFromUser(row);
             getAvatar(row);
             getRole(row);
@@ -65,20 +43,6 @@
         fullName = fullName.trim();
         return fullName;
     }
-
-	function getType(kuorumUser){
-	    var type = "KUORUM_USER";
-        if (kuorumUser.get('userType')=="POLITICIAN"){
-            type = "POLITICIAN";
-        }
-        if (kuorumUser.get('userType')=="CANDIDATE"){
-            type = "CANDIDATE";
-        }
-        if (kuorumUser.get('userType')=="ORGANIZATION"){
-            type = "ORGANIZATION";
-        }
-	    return type;
-	}
 
     function getPoliticianInfo(kuorumUser){
         var professionalDetailsField = "professionalDetails";
@@ -151,53 +115,6 @@
 		kuorumUser.put('regionIso3166_2Length', regionIso3166_2Length);
 		kuorumUser.put('constituencyIso3166_2', constituencyIso.replace('-', ''));
 		kuorumUser.put('constituencyIso3166_2Length', constituencyIsoLength);
-	}
-
-	function transformProject(project){
-        project.put('id',project.get('_id'));
-        project.put('name',project.get('shortName'));
-        project.put('type','PROJECT');
-		project.put('subType',project.get('status')?'OPEN':'APPROVED'); //TODO: APPROVED is not correct
-		project.put('text',project.get('description'));
-		project.put('dateCreated',project.get('dateCreated'));
-		project.put('tags',[project.get('hashtag')]);
-		project.put('hashtag',project.get('hashtag'));
-		project.put('commissions',project.get('commissions'));
-		project.put('regionName', project.get('region').get('name'));
-		project.put('regionIso3166_2', project.get('region').get('iso3166_2'));
-		project.put('urlImage', project.get('image')?project.get('image').get('url'):'');
-		project.put('ownerId',project.get('owner')); // first ownerId because owner field is overwritten
-		project.put('owner',project.get('indexMetaData').get('ownerName'));
-		project.put('relevance', project.get('relevance'));
-		project.put('boost', project.get('relevance'));
-		project.put('deadLine',project.get('deadline'));
-		project.put('kuorumRelevance', 0);
-		project.put('numberPeopleInterestedFor', project.get('peopleVotes').get('total'));
-		project.put('regionIso3166_2Length',project.get('region').get('iso3166_2').length());
-		return project;
-	}
-
-	function transformPost(post){
-	       	post.put('id',post.get('_id'));
-        	post.put('name',post.get('title'));
-	       	post.put('type','POST');
-		post.put('text',post.get('text'));
-		post.put('dateCreated',post.get('dateCreated'));
-		post.put('tags',[post.get('indexMetaData').get('hashtag')]);
-		post.put('hashtagProject',post.get('indexMetaData').get('hashtag'));
-		post.put('commissions',post.get('indexMetaData').get('commissions'));
-		post.put('victory',post.get('victory'));
-		post.put('regionName', post.get('indexMetaData').get('regionName'));
-		post.put('regionIso3166_2', post.get('indexMetaData').get('regionIso3166_2'));
-		post.put('regionIso3166_2Length',post.get('indexMetaData').get('regionIso3166_2').length());
-		post.put('urlImage', post.get('multimedia')?post.get('multimedia').get('url'):'');
-		post.put('ownerId',post.get('owner')); // first ownerId because owner field is overwritten
-		post.put('owner',post.get('indexMetaData').get('ownerName'));
-		post.put('relevance', 0);
-		post.put('deadLine',post.get('deadline'));
-		post.put('kuorumRelevance', 0);
-		post.put('numberPeopleInterestedFor', post.get('numVotes'));
-		return post;
 	}
         ]]></script>
 </dataConfig>

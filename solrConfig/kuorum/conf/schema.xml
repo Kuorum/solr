@@ -10,42 +10,27 @@
    <field name="id"			type="string" 	indexed="true" stored="true" required="true" multiValued="false" />
    <field name="_ts" 			type="long" 	indexed="true" stored="true" />
 
-   <!--Object type: Post, Law, KuorumUser -->
+   <!--Object type: KuorumUser, Debate, Post -->
    <field name="type"			type="string"	indexed="true" stored="true" />
-   <!--Object subtype: Post=>History, Question, Purpose | User => Politician, Person, Organization | Law => Open, Close -->
-   <field name="subType"		type="string"	indexed="true" stored="true" />
-   <!--Object commissions: Post=>Law commissions | User => Interested user commissions | Law => commissions -->
-   <field name="commissions"		type="string"	indexed="true" stored="true" multiValued="true"/>
    <!--Object name: Post => Short title, Law => Short title, KuorumUser => Name + Surname -->
    <field name="name" 			type="text_es" indexed="true" stored="true"/>
    <!--Object text: Post => text, Law => description, KuorumUser => user bio -->
    <field name="text" 			type="text_es" indexed="true" stored="true" required="false"/>
-   <!--Object Owner: Post => owner name, Law => owner name, KuorumUser => NULL -->
+   <!--Object Owner: Post => owner name, Debate => owner name, KuorumUser => NULL -->
    <field name="owner" 			type="text_general" indexed="true" stored="true" required="false"/>
    <field name="ownerId"		type="string" indexed="false" stored="true" required="false"/>
-   <!--Object hashtagProject: Post => project.hashtag, Law => hashtag, KuorumUser => alias -->
-   <field name="hashtag"		type="hashtagType" indexed="true" stored="true" required="false"/>
-   <field name="hashtagProject"		type="hashtagType" indexed="true" stored="true" required="false"/>
+
    <field name="tags"			type="hashtagType" indexed="true" stored="true" required="false"  multiValued="true"/>
-   <!--If the post is a victory -->
-   <field name="victory"		type="boolean" 	indexed="true" stored="true" required="false"/>
 
    <field name="urlImage"		type="string"  indexed="false" stored="true" required="false"/>
-   <!-- KuorumUser role -->
-   <field name="role"			type="string"  indexed="true" stored="true" required="false"/>
    <!-- KuorumUser gender -->
    <field name="gender"			type="string"  indexed="true" stored="true" required="false"/>
    <!-- Politician: politicalParty.name | project: owner.politicalParty.name | Post: project.owner.politicalParty.name-->
    <field name="politicalPartyName"	type="text_politicalParty"  indexed="true" stored="true" required="false"/>
-   <!-- Politician: politicalParty.id | project: owner.politicalParty.id | Post: project.owner.politicalParty.id-->
-   <field name="politicalPartyId"	type="string"  indexed="true" stored="true" required="false"/>
-   <!-- DEPRECATED REMOVE ASAP-->
-   <field name="institutionName"	type="text_general"  indexed="true" stored="true" required="false"/>
- 
+
+     <field name="alias"		type="hashtagType" indexed="true" stored="true" required="false"/>
    <!-- Law relevance status -->
    <field name="relevance"          	type="int"  indexed="true" stored="true" required="false"/>
-   <!-- Law deadline -->
-   <field name="deadLine"          	type="date"  indexed="true" stored="true" required="false"/>
 
    <!-- REGION -->
    <!-- Region name: Post=> project.region.name | User => region.name / Organization | project => region.name -->
@@ -75,18 +60,15 @@
    <!-- COPY FIELDS -->
    <copyField source="name" dest="autocomplete" maxChars="300"/>
    <copyField source="tags" dest="autocomplete" maxChars="300"/>
-   <copyField source="hashtag" dest="autocomplete" maxChars="300"/>
-   <copyField source="hashtagProject" dest="autocomplete" maxChars="300"/>
+   <copyField source="alias" dest="autocomplete" maxChars="300"/>
    <copyField source="politicalPartyName" dest="autocomplete" maxChars="300"/>
    <copyField source="regionName" dest="autocomplete" maxChars="300"/>
-   <copyField source="institutionName" dest="autocomplete" maxChars="300"/>
 
    <!--<copyField source="text" dest="autocomplete" maxChars="300"/>-->
 
    <copyField source="name" 	  dest="spell_es" maxChars="300"/>
    <copyField source="text" 	  dest="spell_es" maxChars="300"/>
-   <copyField source="hashtag" 	  dest="spell_es" maxChars="300"/>
-   <copyField source="hashtagProject" dest="spell_es" maxChars="300"/>
+   <copyField source="alias" 	  dest="spell_es" maxChars="300"/>
  </fields>
 
 
