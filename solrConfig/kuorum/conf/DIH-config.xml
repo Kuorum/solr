@@ -29,7 +29,7 @@
 
         <entity name="debate"
                 pk="id"
-                query="select d.id as id,d.body as body,'DEBATE' as type, d.photoUrl as urlImage, d.datePublished,d.title as title, cu.name as ownerName, cu.mongoId as ownerId from DEBATE d join CRM_USER cu on d.crmUser_id = cu.id"
+                query="select CONCAT('debate_',d.id) as id,d.body as body,'DEBATE' as type, d.photoUrl as urlImage, d.datePublished,d.title as title, cu.name as ownerName, cu.mongoId as ownerId from DEBATE d join CRM_USER cu on d.crmUser_id = cu.id"
                 deltaImportQuery="SELECT id,name from DEBATE where id='${dih.delta.id}'"
                 dataSource="kuorumDDBB"
                 processor="SqlEntityProcessor"
