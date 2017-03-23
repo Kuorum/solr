@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <dataConfig>
-    <dataSource name="KuorumMongo" type="MongoDataSource" database="Kuorum" host="localhost" port="27017"/>
+    <dataSource name="KuorumMongo"
+                type="MongoDataSource"
+                database="Kuorum"
+                host="localhost"
+                port="27017"/>
+
+    <dataSource name="kuorumDDBB"
+                type="JdbcDataSource"
+                driver="com.mysql.jdbc.Driver"
+                url="jdbc:mysql://localhost:3306/kuorum"
+                user="kuorum"
+                password="kuorumDBPass"/>
+
     <propertyWriter dateFormat="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" type="SimplePropertiesWriter" />
 
     <document name="kuorum">
@@ -8,11 +20,31 @@
         <entity name="kuorumUser"
                 processor="MongoEntityProcessor"
                 query="{'authorities.authority':{$ne:'ROLE_INCOMPLETE_USER'}, alias:{$exists:1}}"
-		deltaImportQuery="{'_id':{$oid:'${dih.delta._id}'}}"
+		        deltaImportQuery="{'_id':{$oid:'${dih.delta._id}'}}"
                 deltaQuery="{lastUpdated:{$gt:{$date:'${dih.last_index_time}'}}} "
                 collection="kuorumUser"
-                datasource="KuorumMongo"
+                dataSource="KuorumMongo"
                 transformer="script:transformKuorumUser" >
+        </entity>
+
+        <entity name="debate"
+                pk="id"
+                query="select d.id as id,d.body as body,'DEBATE' as type, d.photoUrl as urlImage, d.datePublished,d.title as title, cu.name as ownerName, cu.mongoId as ownerId from DEBATE d join CRM_USER cu on d.crmUser_id = cu.id"
+                deltaImportQuery="SELECT id,name from DEBATE where id='${dih.delta.id}'"
+                dataSource="kuorumDDBB"
+                processor="SqlEntityProcessor"
+                >
+            <field column="id" name="id"/>
+            <field column="title" name="name"/>
+            <field column="ownerName" name="owner"/>
+            <field column="ownerId" name="ownerId"/>
+            <field column="type" name="type"/>
+            <field column="datePublished" name="dateCreated"/>
+            <!--<field column="alias" name="name"/>-->
+            <field column="urlImage" name="urlImage"/>
+            <field column="body" name="text"/>
+            <!--<field column="kuorumRelevance" name="name"/>-->
+
         </entity>
     </document>
 
@@ -22,7 +54,7 @@
             row.put('name', getFullName(row));
             row.put('type', "KUORUM_USER");
             row.put('dateCreated', row.get('dateCreated'));
-	        row.put('hashtag', row.get('alias'));
+	        row.put('alias', row.get('alias'));
 	        getTags(row);
             getRegionNameFromUser(row);
             getAvatar(row);
@@ -31,7 +63,6 @@
             getPoliticianInfo(row);
             row.put('text', row.get('bio'));
             row.put('kuorumRelevance', row.get('relevance'));
-            row.put('numberPeopleInterestedFor', 100); //TODO: recover from other collection
             return row;
         }
 
