@@ -29,8 +29,31 @@
 
         <entity name="debate"
                 pk="id"
-                query="select CONCAT('debate_',d.id) as id,d.body as body,'DEBATE' as type, d.photoUrl as urlImage, d.datePublished,d.title as title, cu.name as ownerName, cu.mongoId as ownerId from DEBATE d join CRM_USER cu on d.crmUser_id = cu.id"
+                query="select CONCAT('debate_',d.id) as id,d.body as body,'DEBATE' as type, d.photoUrl as urlImage, d.datePublished as datePublished,d.title as title, cu.name as ownerName, cu.mongoId as ownerId from DEBATE d join CRM_USER cu on d.crmUser_id = cu.id where d.datePublished &lt; NOW()"
                 deltaImportQuery="SELECT id,name from DEBATE where id='${dih.delta.id}'"
+                deltaQuery="select id from item where datePublished &gt; '${dih.last_index_time}'"
+                dataSource="kuorumDDBB"
+                processor="SqlEntityProcessor"
+                >
+            <field column="id" name="id"/>
+            <field column="title" name="name"/>
+            <field column="ownerName" name="owner"/>
+            <field column="ownerId" name="ownerId"/>
+            <field column="type" name="type"/>
+            <field column="datePublished" name="dateCreated"/>
+            <!--<field column="alias" name="name"/>-->
+            <field column="urlImage" name="urlImage"/>
+            <field column="body" name="text"/>
+            <!--<field column="kuorumRelevance" name="name"/>-->
+
+        </entity>
+
+
+        <entity name="post"
+                pk="id"
+                query="select CONCAT('post_',p.id) as id,p.body as body,'POST' as type, p.photoUrl as urlImage, p.datePublished as datePublished,p.title as title, cu.name as ownerName, cu.mongoId as ownerId from POST p join CRM_USER cu on p.crmUser_id = cu.id where p.datePublished &lt; NOW()"
+                deltaImportQuery="SELECT id,name from POST where id='${dih.delta.id}'"
+                deltaQuery="select id from POST where datePublished &gt; '${dih.last_index_time}'"
                 dataSource="kuorumDDBB"
                 processor="SqlEntityProcessor"
                 >
