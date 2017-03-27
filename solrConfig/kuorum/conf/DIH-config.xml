@@ -31,7 +31,7 @@
                 pk="id"
                 query="select CONCAT('debate_',d.id) as id,d.body as body,'DEBATE' as type, d.photoUrl as urlImage, d.datePublished as datePublished,d.title as title, cu.name as ownerName, cu.mongoId as ownerId from DEBATE d join CRM_USER cu on d.crmUser_id = cu.id where d.datePublished &lt; NOW()"
                 deltaImportQuery="SELECT id,name from DEBATE where id='${dih.delta.id}'"
-                deltaQuery="select id from item where datePublished &gt; '${dih.last_index_time}'"
+                deltaQuery="select id from DEBATE where datePublished &gt; '${dih.last_index_time}'"
                 dataSource="kuorumDDBB"
                 processor="SqlEntityProcessor"
                 >
