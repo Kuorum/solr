@@ -107,8 +107,8 @@
     }
 
 	function getTags(kuorumUser){
-		if (kuorumUser.get('ideology') !=null && kuorumUser.get('ideology').get('supportedCauses')){
-			kuorumUser.put('tags',kuorumUser.get('ideology').get('supportedCauses'))
+		if (kuorumUser.get('ideology') !=null && kuorumUser.get('ideology').get('defendedCauses')){
+			kuorumUser.put('tags',kuorumUser.get('ideology').get('defendedCauses'))
 		}else{
 			kuorumUser.put('tags',[])
 		}
