@@ -52,7 +52,7 @@
         <entity name="post"
                 pk="id"
                 query="select CONCAT('post_',p.id) as id,p.body as body,'POST' as type, p.photoUrl as urlImage, p.datePublished as datePublished,p.title as title, cu.name as ownerName, cu.mongoId as ownerId from POST p join CRM_USER cu on p.crmUser_id = cu.id where p.datePublished &lt; NOW()"
-                deltaImportQuery="select CONCAT('post_',p.id) as id,p.body as body,'POST' as type, p.photoUrl as urlImage, p.datePublished as datePublished,p.title as title, cu.name as ownerName, cu.mongoId as ownerId from POST p join CRM_USER cu on p.crmUser_id = cu.id where id='${dih.delta.id}'"
+                deltaImportQuery="select CONCAT('post_',p.id) as id,p.body as body,'POST' as type, p.photoUrl as urlImage, p.datePublished as datePublished,p.title as title, cu.name as ownerName, cu.mongoId as ownerId from POST p join CRM_USER cu on p.crmUser_id = cu.id where p.id='${dih.delta.id}'"
                 deltaQuery="select id from POST where datePublished &gt; '${dih.last_index_time}' and datePublished &lt; NOW()"
                 dataSource="kuorumDDBB"
                 processor="SqlEntityProcessor"
