@@ -86,8 +86,20 @@
             getPoliticianInfo(row);
             row.put('text', row.get('bio'));
             row.put('kuorumRelevance', row.get('relevance'));
-            row.put('relevance', row.get('numCommunications'));
+            row.put('relevance', calcRelevance(row));
             return row;
+        }
+
+        function calcRelevance(kuorumUser){
+            var numCommunications = 0;
+            if (kuorumUser.get('numCommunications')){
+                numCommunications = parseInt(kuorumUser.get('numCommunications'));
+            }
+            var isEnabled = 0;
+            if (kuorumUser.get("enabled")){
+                isEnabled = 1;
+            }
+            return isEnabled + numCommunications*10;
         }
 
     function getFullName(kuorumUser){
