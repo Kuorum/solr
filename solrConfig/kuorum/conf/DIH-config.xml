@@ -86,6 +86,7 @@
             getPoliticianInfo(row);
             row.put('text', row.get('bio'));
             row.put('kuorumRelevance', row.get('relevance'));
+            row.put('relevance', row.get('numCommunications'));
             return row;
         }
 

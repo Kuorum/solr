@@ -29,7 +29,7 @@
    <field name="politicalPartyName"	type="text_politicalParty"  indexed="true" stored="true" required="false"/>
 
      <field name="alias"		type="hashtagType" indexed="true" stored="true" required="false"/>
-   <!-- Law relevance status -->
+
    <field name="relevance"          	type="int"  indexed="true" stored="true" required="false"/>
 
    <!-- REGION -->
