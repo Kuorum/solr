@@ -96,10 +96,18 @@
                 numCommunications = parseInt(kuorumUser.get('numCommunications'));
             }
             var isEnabled = 0;
-            if (kuorumUser.get("enabled")==true){
+            if (kuorumUser.get("enabled")){
                 isEnabled = 1;
             }
-            return isEnabled + numCommunications*10;
+
+            var images = 0;
+            if (kuorumUser.get('avatar')){
+                images = images +1;
+            }
+            if (kuorumUser.get('imageProfile')){
+                images = images +1;
+            }
+            return images + isEnabled *10 + numCommunications*10;
         }
 
     function getFullName(kuorumUser){
