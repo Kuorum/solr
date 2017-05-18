@@ -96,7 +96,7 @@
                 numCommunications = parseInt(kuorumUser.get('numCommunications'));
             }
             var isEnabled = 0;
-            if (kuorumUser.get("enabled")){
+            if (kuorumUser.get("enabled")==true){
                 isEnabled = 1;
             }else{
                 isEnable = -9000;
