@@ -18,7 +18,7 @@
    <field name="text" 			type="text_es" indexed="true" stored="true" required="false"/>
    <!--Object Owner: Post => owner name, Debate => owner name, KuorumUser => NULL -->
    <field name="owner" 			type="text_general" indexed="true" stored="true" required="false"/>
-   <field name="ownerId"		type="string" indexed="false" stored="true" required="false"/>
+   <field name="ownerId"		type="string" indexed="true" stored="true" required="false"/>
 
    <field name="tags"			type="hashtagType" indexed="true" stored="true" required="false"  multiValued="true"/>
 
