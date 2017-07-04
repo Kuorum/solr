@@ -29,9 +29,9 @@
 
         <entity name="debate"
                 pk="id"
-                query="select CONCAT('debate_',d.id) as id,d.body as body,'DEBATE' as type, d.photoUrl as urlImage, d.datePublished as datePublished,d.title as title, cu.name as ownerName, cu.mongoId as ownerId from DEBATE d join CRM_USER cu on d.crmUser_id = cu.id where d.datePublished &lt; NOW()"
+                query="select CONCAT('debate_',d.id) as id,d.body as body,'DEBATE' as type, d.photoUrl as urlImage, d.datePublished as datePublished,d.title as title, cu.name as ownerName, cu.mongoId as ownerId from DEBATE d join CRM_USER cu on d.crmUser_id = cu.id join CAMPAIGN c on d.newsletter_id=c.id where d.datePublished &lt; NOW() and c.status='SENT'"
                 deltaImportQuery="SELECT CONCAT('debate_',d.id) as id,d.body as body,'DEBATE' as type, d.photoUrl as urlImage, d.datePublished as datePublished,d.title as title, cu.name as ownerName, cu.mongoId as ownerId from DEBATE d join CRM_USER cu on d.crmUser_id = cu.id where d.id='${dih.delta.id}'"
-                deltaQuery="select id from DEBATE where datePublished &gt; '${dih.last_index_time}' and datePublished &lt; NOW()"
+                deltaQuery="select d.id as id from DEBATE d join CAMPAIGN c on d.newsletter_id=c.id where datePublished &gt; '${dih.last_index_time}' and datePublished &lt; NOW() and c.status='SENT'"
                 dataSource="kuorumDDBB"
                 processor="SqlEntityProcessor"
                 >
@@ -51,9 +51,9 @@
 
         <entity name="post"
                 pk="id"
-                query="select CONCAT('post_',p.id) as id,p.body as body,'POST' as type, p.photoUrl as urlImage, p.datePublished as datePublished,p.title as title, cu.name as ownerName, cu.mongoId as ownerId from POST p join CRM_USER cu on p.crmUser_id = cu.id where p.datePublished &lt; NOW()"
+                query="select CONCAT('post_',p.id) as id,p.body as body,'POST' as type, p.photoUrl as urlImage, p.datePublished as datePublished,p.title as title, cu.name as ownerName, cu.mongoId as ownerId from POST p join CRM_USER cu on p.crmUser_id = cu.id join CAMPAIGN c on p.newsletter_id=c.id where p.datePublished &lt; NOW() and c.status='SENT'"
                 deltaImportQuery="select CONCAT('post_',p.id) as id,p.body as body,'POST' as type, p.photoUrl as urlImage, p.datePublished as datePublished,p.title as title, cu.name as ownerName, cu.mongoId as ownerId from POST p join CRM_USER cu on p.crmUser_id = cu.id where p.id='${dih.delta.id}'"
-                deltaQuery="select id from POST where datePublished &gt; '${dih.last_index_time}' and datePublished &lt; NOW()"
+                deltaQuery="select p.id as id from POST p join CAMPAIGN c on p.newsletter_id=c.id where datePublished &gt; '${dih.last_index_time}' and datePublished &lt; NOW() and c.status='SENT'"
                 dataSource="kuorumDDBB"
                 processor="SqlEntityProcessor"
                 >
