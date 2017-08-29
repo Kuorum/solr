@@ -49,6 +49,9 @@
    <field name="autocomplete"		type="autocompleteType"	indexed="true" stored="true" multiValued="true"/>
    <field name="spell_es"		type="spellType_es"		indexed="true" stored="true" multiValued="true"/>
 
+     <field name="suggestAlias"		type="suggestion"		indexed="true"/>
+     <field name="suggestName"		type="suggestion"		indexed="true"/>
+
    <!-- kuorumRelevance: Post=> null | User => calculated using an algrithm on kuorum | project => null -->
    <field name="kuorumRelevance"	type="int"		indexed="true" stored="true" required="false"/>
 
@@ -67,6 +70,9 @@
    <copyField source="name" 	  dest="spell_es" maxChars="300"/>
    <copyField source="text" 	  dest="spell_es" maxChars="300"/>
    <copyField source="alias" 	  dest="spell_es" maxChars="300"/>
+
+   <copyField source="alias" 	  dest="suggestAlias" maxChars="300"/>
+   <copyField source="name" 	  dest="suggestName" maxChars="300"/>
  </fields>
 
 
@@ -158,6 +164,14 @@
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
       </analyzer>
     </fieldType>
+
+      <fieldType name="suggestion" class="solr.TextField" positionIncrementGap="100">
+          <analyzer>
+              <tokenizer class="solr.KeywordTokenizerFactory"/>
+              <filter class="solr.LowerCaseFilterFactory"/>
+              <filter class="solr.ASCIIFoldingFilterFactory"/>
+          </analyzer>
+      </fieldType>
 
     <!-- A general text field that has reasonable, generic
          cross-language defaults: it tokenizes with StandardTokenizer,
