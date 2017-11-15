@@ -3,13 +3,13 @@
     <dataSource name="KuorumMongo"
                 type="MongoDataSource"
                 database="Kuorum"
-                host="localhost"
+                host="192.168.0.150"
                 port="27017"/>
 
     <dataSource name="kuorumDDBB"
                 type="JdbcDataSource"
                 driver="com.mysql.jdbc.Driver"
-                url="jdbc:mysql://localhost:3306/kuorum"
+                url="jdbc:mysql://192.168.0.170/kuorum?useSSL=false"
                 user="kuorum"
                 password="kuorumDBPass"/>
 
@@ -188,9 +188,9 @@
         }
 
  		kuorumUser.put('regionName', regionName);
-		kuorumUser.put('regionIso3166_2', regionIso.replace('-', ''));
+		kuorumUser.put('regionIso3166_2', regionIso.replaceAll('-', ''));
 		kuorumUser.put('regionIso3166_2Length', regionIso3166_2Length);
-		kuorumUser.put('constituencyIso3166_2', constituencyIso.replace('-', ''));
+		kuorumUser.put('constituencyIso3166_2', constituencyIso.replaceAll('-', ''));
 		kuorumUser.put('constituencyIso3166_2Length', constituencyIsoLength);
 	}
         ]]></script>
