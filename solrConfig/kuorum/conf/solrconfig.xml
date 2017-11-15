@@ -817,6 +817,7 @@
 
 	<str name="facet">true</str>
 	<str name="facet.field">type</str>
+	<str name="facet.field">tags</str>
 	<str name="facet.limit">10</str>
 
        <str name="spellcheck">true</str>
