@@ -30,7 +30,7 @@
 
      <field name="alias"		type="hashtagType" indexed="true" stored="true" required="false"/>
 
-   <field name="relevance"          	type="int"  indexed="true" stored="true" required="false"/>
+   <field name="relevance"          	type="int"  indexed="true" stored="true" required="true"/>
 
    <!-- REGION -->
    <!-- Region name: Post=> project.region.name | User => region.name / Organization | project => region.name -->
