@@ -29,8 +29,8 @@
 
         <entity name="debate"
                 pk="id"
-                query="select CONCAT('debate_',d.id) as id,d.body as body,'DEBATE' as type, 100 as relevance, d.photoUrl as urlImage, d.datePublished as datePublished,d.title as title, cu.name as ownerName, cu.mongoId as ownerId from DEBATE d join CRM_USER cu on d.crmUser_id = cu.id join CAMPAIGN c on d.newsletter_id=c.id where d.datePublished &lt; NOW() and c.status='SENT' and d.deleted=0"
-                deltaImportQuery="SELECT CONCAT('debate_',d.id) as id,d.body as body,'DEBATE' as type, 100 as relevance, d.photoUrl as urlImage, d.datePublished as datePublished,d.title as title, cu.name as ownerName, cu.mongoId as ownerId from DEBATE d join CRM_USER cu on d.crmUser_id = cu.id where d.id='${dih.delta.id}'"
+                query="select CONCAT('debate_',d.id) as id,d.body as body,'DEBATE' as type, 100 as relevance, cu.alias as alias, d.photoUrl as urlImage, d.datePublished as datePublished,d.title as title, cu.name as ownerName, cu.mongoId as ownerId from DEBATE d join CRM_USER cu on d.crmUser_id = cu.id join CAMPAIGN c on d.newsletter_id=c.id where d.datePublished &lt; NOW() and c.status='SENT' and d.deleted=0"
+                deltaImportQuery="SELECT CONCAT('debate_',d.id) as id,d.body as body,'DEBATE' as type, 100 as relevance, cu.alias as alias, d.photoUrl as urlImage, d.datePublished as datePublished,d.title as title, cu.name as ownerName, cu.mongoId as ownerId from DEBATE d join CRM_USER cu on d.crmUser_id = cu.id where d.id='${dih.delta.id}'"
                 deltaQuery="select d.id as id from DEBATE d join CAMPAIGN c on d.newsletter_id=c.id where datePublished &gt; '${dih.last_index_time}' and datePublished &lt; NOW() and c.status='SENT' and d.deleted=0"
                 dataSource="kuorumDDBB"
                 processor="SqlEntityProcessor"
@@ -41,7 +41,7 @@
             <field column="ownerId" name="ownerId"/>
             <field column="type" name="type"/>
             <field column="datePublished" name="dateCreated"/>
-            <!--<field column="alias" name="name"/>-->
+            <field column="alias" name="alias"/>
             <field column="urlImage" name="urlImage"/>
             <field column="body" name="text"/>
             <field column="relevance" name="relevance"/>
@@ -51,8 +51,8 @@
 
         <entity name="post"
                 pk="id"
-                query="select CONCAT('post_',p.id) as id,p.body as body,'POST' as type, 100 as relevance, p.photoUrl as urlImage, p.datePublished as datePublished,p.title as title, cu.name as ownerName, cu.mongoId as ownerId from POST p join CRM_USER cu on p.crmUser_id = cu.id join CAMPAIGN c on p.newsletter_id=c.id where p.datePublished &lt; NOW() and c.status='SENT' and p.deleted=0"
-                deltaImportQuery="select CONCAT('post_',p.id) as id,p.body as body,'POST' as type, 100 as relevance,  p.photoUrl as urlImage, p.datePublished as datePublished,p.title as title, cu.name as ownerName, cu.mongoId as ownerId from POST p join CRM_USER cu on p.crmUser_id = cu.id where p.id='${dih.delta.id}' "
+                query="select CONCAT('post_',p.id) as id,p.body as body,'POST' as type, 100 as relevance, cu.alias as alias, p.photoUrl as urlImage, p.datePublished as datePublished,p.title as title, cu.name as ownerName, cu.mongoId as ownerId from POST p join CRM_USER cu on p.crmUser_id = cu.id join CAMPAIGN c on p.newsletter_id=c.id where p.datePublished &lt; NOW() and c.status='SENT' and p.deleted=0"
+                deltaImportQuery="select CONCAT('post_',p.id) as id,p.body as body,'POST' as type, 100 as relevance, cu.alias as alias, p.photoUrl as urlImage, p.datePublished as datePublished,p.title as title, cu.name as ownerName, cu.mongoId as ownerId from POST p join CRM_USER cu on p.crmUser_id = cu.id where p.id='${dih.delta.id}' "
                 deltaQuery="select p.id as id from POST p join CAMPAIGN c on p.newsletter_id=c.id where datePublished &gt; '${dih.last_index_time}' and datePublished &lt; NOW() and c.status='SENT' and p.deleted=0"
                 dataSource="kuorumDDBB"
                 processor="SqlEntityProcessor"
@@ -63,7 +63,7 @@
             <field column="ownerId" name="ownerId"/>
             <field column="type" name="type"/>
             <field column="datePublished" name="dateCreated"/>
-            <!--<field column="alias" name="name"/>-->
+            <field column="alias" name="alias"/>
             <field column="urlImage" name="urlImage"/>
             <field column="body" name="text"/>
             <field column="relevance" name="relevance"/>
