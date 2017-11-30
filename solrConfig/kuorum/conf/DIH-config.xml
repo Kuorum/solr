@@ -22,7 +22,7 @@
                 processor="MongoEntityProcessor"
                 query="{'authorities.authority':{$ne:'ROLE_INCOMPLETE_USER'}, alias:{$exists:1}}"
 		deltaImportQuery="{'_id':{$oid:'${dih.delta._id}'}}"
-                deltaQuery="{lastUpdated:{$gt:{$date:'${dih.last_index_time}'}},{'authorities.authority':{$ne:'ROLE_INCOMPLETE_USER'}, alias:{$exists:1}} "
+                deltaQuery="{lastUpdated:{$gt:{$date:'${dih.last_index_time}'}},'authorities.authority':{$ne:'ROLE_INCOMPLETE_USER'}, alias:{$exists:1}} "
                 collection="kuorumUser"
                 dataSource="KuorumMongo"
                 transformer="script:transformKuorumUser" >
@@ -33,7 +33,7 @@
                 processor="MongoEntityProcessor"
                 query="{enabled:true, alias:{$exists:1}}"
 		deltaImportQuery="{'_id':{$oid:'${dih.delta._id}'}}"
-                deltaQuery="{lastUpdated:{$gt:{$date:'${dih.last_index_time}'}},{enabled:true, alias:{$exists:1}} "
+                deltaQuery="{lastUpdated:{$gt:{$date:'${dih.last_index_time}'}},enabled:true, alias:{$exists:1}} "
                 collection="kuorumUser"
                 dataSource="KuorumMongo"
                 transformer="script:transformKuorumUser" >
