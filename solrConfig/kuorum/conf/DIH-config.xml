@@ -47,7 +47,7 @@
                         CONCAT('debate_',d.id) as solrId,
                         d.id as id,
                         d.body as body,
-                        (CASE WHEN d.event_id IS NOT NULL THEN 'DEBATE' else 'EVENT') as type,
+                        (if (d.event_id is not null, 'EVENT','DEBATE')) as type,
                         10 as relevance,
                         cu.alias as alias,
                         d.photoUrl as urlImage,
@@ -60,7 +60,7 @@
                 deltaImportQuery="SELECT
                         CONCAT('debate_',d.id) as id,
                         d.body as body,
-                        (CASE WHEN d.event_id IS NOT NULL THEN 'DEBATE' else 'EVENT') as type,
+                        (if (d.event_id is not null, 'EVENT','DEBATE')) as type,
                         10 as relevance,
                         cu.alias as alias,
                         d.photoUrl as urlImage,
@@ -101,7 +101,7 @@
                 query="select
                     CONCAT('post_',p.id) as solrId,
                     p.id as id, p.body as body,
-                    (CASE WHEN p.event_id IS NOT NULL THEN 'POST' else 'EVENT') as type,
+                    (if (p.event_id is not null, 'EVENT','POST')) as type,
                     10 as relevance,
                     cu.alias as alias,
                     p.photoUrl as urlImage,
@@ -114,7 +114,7 @@
                 deltaImportQuery="select
                     CONCAT('post_',p.id) as id,
                     p.body as body,
-                    (CASE WHEN p.event_id IS NOT NULL THEN 'POST' else 'EVENT') as type,
+                    (if (p.event_id is not null, 'EVENT','POST')) as type,
                     10 as relevance,
                     cu.alias as alias,
                     p.photoUrl as urlImage,
