@@ -58,7 +58,8 @@
                     from DEBATE d join CRM_USER cu on d.crmUser_id = cu.id join CAMPAIGN c on d.newsletter_id=c.id
                     where d.datePublished &lt; NOW() and c.status='SENT' and d.deleted=0"
                 deltaImportQuery="SELECT
-                        CONCAT('debate_',d.id) as id,
+                        CONCAT('debate_',d.id) as solrId,
+                        d.id as id,
                         d.body as body,
                         (if (d.event_id is not null, 'EVENT','DEBATE')) as type,
                         10 as relevance,
@@ -100,7 +101,8 @@
                 pk="id"
                 query="select
                     CONCAT('post_',p.id) as solrId,
-                    p.id as id, p.body as body,
+                    p.id as id,
+                    p.body as body,
                     (if (p.event_id is not null, 'EVENT','POST')) as type,
                     10 as relevance,
                     cu.alias as alias,
@@ -112,7 +114,8 @@
                 from POST p join CRM_USER cu on p.crmUser_id = cu.id join CAMPAIGN c on p.newsletter_id=c.id
                 where p.datePublished &lt; NOW() and c.status='SENT' and p.deleted=0"
                 deltaImportQuery="select
-                    CONCAT('post_',p.id) as id,
+                    CONCAT('post_',p.id) as solrId,
+                    p.id as id,
                     p.body as body,
                     (if (p.event_id is not null, 'EVENT','POST')) as type,
                     10 as relevance,
