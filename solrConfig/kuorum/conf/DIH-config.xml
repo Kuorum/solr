@@ -71,7 +71,7 @@
                         cu.mongoId as ownerId
                     from DEBATE d join CRM_USER cu on d.crmUser_id = cu.id
                     where d.id='${dih.delta.id}'"
-                deltaQuery="select d.id as id from DEBATE d join CAMPAIGN c on d.newsletter_id=c.id where datePublished &gt; '${dih.last_index_time}' and lastUpdate &gt; '${dih.last_index_time}' and datePublished &lt; NOW() and c.status='SENT' and d.deleted=0"
+                deltaQuery="select d.id as id from DEBATE d join CAMPAIGN c on d.newsletter_id=c.id where lastUpdate &gt; '${dih.last_index_time}' and datePublished &lt; NOW() and c.status='SENT' and d.deleted=0"
                 dataSource="kuorumDDBB"
                 processor="SqlEntityProcessor"
                 >
@@ -127,7 +127,7 @@
                     cu.mongoId as ownerId
                  from POST p join CRM_USER cu on p.crmUser_id = cu.id
                  where p.id='${dih.delta.id}' "
-                deltaQuery="select p.id as id from POST p join CAMPAIGN c on p.newsletter_id=c.id where datePublished &gt; '${dih.last_index_time}' and lastUpdate &gt; '${dih.last_index_time}' and datePublished &lt; NOW() and c.status='SENT' and p.deleted=0"
+                deltaQuery="select p.id as id from POST p join CAMPAIGN c on p.newsletter_id=c.id where lastUpdate &gt; '${dih.last_index_time}' and datePublished &lt; NOW() and c.status='SENT' and p.deleted=0"
                 dataSource="kuorumDDBB"
                 processor="SqlEntityProcessor"
                 >
