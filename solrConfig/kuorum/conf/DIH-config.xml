@@ -85,7 +85,7 @@
             <field column="relevance" name="relevance"/>
             <entity
                 name="cause"
-                query="select c.name as causeName FROM DEBATE_CAUSE dc join CAUSE c on c.id =dc.cause_id where dc.debate_id='${debate.id}'"
+                query="select c.name as causeName FROM CAMPAIGN_CAUSE cc join CAUSE c on c.id =cc.cause_id where cc.campaign_id='${campaign.id}'"
                 dataSource="kuorumDDBB"
                 processor="SqlEntityProcessor"
             >
