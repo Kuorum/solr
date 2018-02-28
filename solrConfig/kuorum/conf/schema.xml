@@ -23,6 +23,7 @@
    <field name="tags"			type="hashtagType" indexed="true" stored="true" required="false"  multiValued="true"/>
 
    <field name="urlImage"		type="string"  indexed="false" stored="true" required="false"/>
+   <field name="urlVideo"		type="string"  indexed="false" stored="true" required="false"/>
    <!-- KuorumUser gender -->
    <field name="gender"			type="string"  indexed="true" stored="true" required="false"/>
    <!-- Politician: politicalParty.name | project: owner.politicalParty.name | Post: project.owner.politicalParty.name-->
