@@ -109,6 +109,7 @@
 	        getTags(row);
             getRegionNameFromUser(row);
             getAvatar(row);
+            getImageProfile(row);
             getRole(row);
             getGender(row);
             getPoliticianInfo(row);
@@ -183,6 +184,11 @@
         function getAvatar(kuorumUser){
             if (kuorumUser.get('avatar') != null){
                 kuorumUser.put("urlImage",kuorumUser.get('avatar').get('url'));
+            }
+        }
+        function getImageProfile(kuorumUser){
+            if (kuorumUser.get('imageProfile') != null){
+                kuorumUser.put("urlImageProfile",kuorumUser.get('imageProfile').get('url'));
             }
         }
 	function getRegionNameFromUser(kuorumUser){
