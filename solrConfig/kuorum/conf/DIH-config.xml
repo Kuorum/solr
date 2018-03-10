@@ -109,6 +109,7 @@
 	        getTags(row);
             getRegionNameFromUser(row);
             getAvatar(row);
+            getRoleName(row);
             getImageProfile(row);
             getRole(row);
             getGender(row);
