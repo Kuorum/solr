@@ -30,7 +30,7 @@
    <!-- Politician: politicalParty.name | project: owner.politicalParty.name | Post: project.owner.politicalParty.name-->
    <field name="politicalPartyName"	type="text_politicalParty"  indexed="true" stored="true" required="false"/>
 
-     <field name="alias"		type="hashtagType" indexed="true" stored="true" required="false"/>
+   <field name="alias"		type="hashtagType" indexed="true" stored="true" required="false"/>
 
    <field name="relevance"          	type="int"  indexed="true" stored="true" required="true"/>
 
@@ -47,6 +47,8 @@
 
    <field name="dateCreated" 		type="date" 	indexed="true" stored="true"/>
 
+   <!-- USER ROLE NAME -->
+   <field name="roleName"	type="string"  indexed="false" stored="true" required="false"/>
 
    <field name="autocomplete"		type="autocompleteType"	indexed="true" stored="true" multiValued="true"/>
    <field name="spell_es"		type="spellType_es"		indexed="true" stored="true" multiValued="true"/>

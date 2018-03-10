@@ -180,6 +180,11 @@
                 kuorumUser.put("gender", "FEMALE");
             }
         }
+        function getRoleName(kuorumUser){
+            if (kuorumUser.get('professionalDetails') != null && kuorumUser.get('professionalDetails').get('position') != null){
+                kuorumUser.put("roleName", kuorumUser.get('professionalDetails').get('position'));
+            }
+        }
 
         function getAvatar(kuorumUser){
             if (kuorumUser.get('avatar') != null){
