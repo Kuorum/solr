@@ -32,8 +32,9 @@
         <entity name="kuorumUser"
                 processor="MongoEntityProcessor"
                 query="{enabled:true, alias:{$exists:1}}"
-		deltaImportQuery="{'_id':{$oid:'${dih.delta._id}'}}"
+		        deltaImportQuery="{'_id':{$oid:'${dih.delta._id}'}}"
                 deltaQuery="{lastUpdated:{$gt:{$date:'${dih.last_index_time}'}},enabled:true, alias:{$exists:1}} "
+                deletedPkQuery="{enabled:false}"
                 collection="kuorumUser"
                 dataSource="KuorumMongo"
                 transformer="script:transformKuorumUser" >
@@ -72,6 +73,7 @@
                     from CAMPAIGN c join CRM_USER cu on c.crmUser_id = cu.id
                     where c.id='${dih.delta.id}'"
                 deltaQuery="select c.id as id from CAMPAIGN c join NEWSLETTER n on c.newsletter_id=n.id where lastUpdate &gt; '${dih.last_index_time}' and datePublished &lt; NOW() and n.status='SENT' and c.deleted=0"
+                deletedPkQuery="select c.id from CAMPAIGN c join CRM_USER cu on c.crmUser_id=cu.id where cu.deleted=1 or c.deleted=1"
                 dataSource="kuorumDDBB"
                 processor="SqlEntityProcessor"
                 >
