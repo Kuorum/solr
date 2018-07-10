@@ -172,6 +172,7 @@
 
    <!-- kuorumRelevance: Post=> null | User => calculated using an algrithm on kuorum | project => null -->
    <field name="kuorumRelevance"	type="pint"		indexed="true" stored="true" required="false"/>
+   <field name="checkValidation"	type="boolean"	indexed="true" stored="true" required="false"/>
 
 
    

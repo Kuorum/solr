@@ -52,6 +52,7 @@
                         c.photoUrl as urlImage,
                         c.videoUrl as urlVideo,
                         c.datePublished as datePublished,
+			c.checkValidation as checkValidation,
                         c.title as title,
                         cu.name as ownerName,
                         cu.mongoId as ownerId
@@ -66,7 +67,8 @@
                         cu.alias as alias,
                         c.photoUrl as urlImage,
                         c.videoUrl as urlVideo,
-                        c.datePublished as datePublished,
+			c.datePublished as datePublished,
+			c.checkValidation as checkValidation,
                         c.title as title,
                         cu.name as ownerName,
                         cu.mongoId as ownerId
@@ -85,6 +87,7 @@
             <field column="ownerId" name="ownerId"/>
             <field column="type" name="type"/>
             <field column="datePublished" name="dateCreated"/>
+            <field column="checkValidation" name="checkValidation"/>
             <field column="alias" name="alias"/>
             <field column="urlImage" name="urlImage"/>
             <field column="urlVideo" name="urlVideo"/>
