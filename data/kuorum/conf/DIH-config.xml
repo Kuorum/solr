@@ -214,6 +214,13 @@
                 kuorumUser.put("urlImageProfile",kuorumUser.get('imageProfile').get('url'));
             }
         }
+        function getIfUserIsValidated(kuorumUser){
+            if (kuorumUser.get('isValid') != null && kuorumUser.get('isValid')){
+                kuorumUser.put("checkValidation",true);
+            }else{
+                kuorumUser.put("checkValidation",false);
+            }
+        }
 	function getRegionNameFromUser(kuorumUser){
 		var regionName ="";
 		var regionIso = "";
