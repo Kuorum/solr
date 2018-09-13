@@ -90,6 +90,7 @@
             <field column="type" name="type"/>
             <field column="datePublished" name="dateCreated"/>
             <field column="checkValidation" name="checkValidation"/>
+            <field column="checkValidation" name="checkValidationActive"/>
             <field column="alias" name="alias"/>
             <field column="urlImage" name="urlImage"/>
             <field column="urlVideo" name="urlVideo"/>
