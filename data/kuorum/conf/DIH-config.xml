@@ -28,7 +28,7 @@
                 transformer="script:transformKuorumUser" >
         </entity>
 -->
-<!-- 	KUORUM USER WITH EMAIL NO CONFIRMED -->
+<!-- 	KUORUM USER WITH EMAIL NO CONFIRMED [ALL USERS]-->
         <entity name="kuorumUser"
                 processor="MongoEntityProcessor"
                 query="{enabled:true, alias:{$exists:1}}"
