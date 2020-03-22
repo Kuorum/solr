@@ -1,3 +1,2 @@
-Configuración del solr para Kuorum.org
-
-www.kuorum.org
+# solr
+Kuorum Solr7 config

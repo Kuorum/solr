@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataConfig>
+    <dataSource name="KuorumMongo"
+                type="MongoDataSource"
+                database="Kuorum"
+                host="192.168.0.150"
+                port="27017"/>
+
+    <dataSource name="kuorumDDBB"
+                type="JdbcDataSource"
+                driver="com.mysql.jdbc.Driver"
+                url="jdbc:mysql://192.168.0.170/kuorum?useSSL=false"
+                user="kuorum"
+                password="kuorumDBPass"/>
+
+    <propertyWriter dateFormat="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" type="SimplePropertiesWriter" />
+
+    <document name="kuorum">
+
+<!--    KUORUM USER WITH MAIL CONFIRMED
+        <entity name="kuorumUser"
+                processor="MongoEntityProcessor"
+                query="{'authorities.authority':{$ne:'ROLE_INCOMPLETE_USER'}, alias:{$exists:1}}"
+		deltaImportQuery="{'_id':{$oid:'${dih.delta._id}'}}"
+                deltaQuery="{lastUpdated:{$gt:{$date:'${dih.last_index_time}'}},'authorities.authority':{$ne:'ROLE_INCOMPLETE_USER'}, alias:{$exists:1}} "
+                collection="kuorumUser"
+                dataSource="KuorumMongo"
+                transformer="script:transformKuorumUser" >
+        </entity>
+-->
+<!-- 	KUORUM USER WITH EMAIL NO CONFIRMED -->
+        <entity name="kuorumUser"
+                processor="MongoEntityProcessor"
+                query="{enabled:true, alias:{$exists:1}}"
+		        deltaImportQuery="{'_id':{$oid:'${dih.delta._id}'}}"
+                deltaQuery="{lastUpdated:{$gt:{$date:'${dih.last_index_time}'}},enabled:true, alias:{$exists:1}} "
+                deletedPkQuery="{enabled:false}"
+                collection="kuorumUser"
+                dataSource="KuorumMongo"
+                transformer="script:transformKuorumUser" >
+        </entity>
+
+	<entity name="campaign"
+                pk="id"
+                query="select
+                        c.id as id,
+                        c.body as body,
+                        d.domainName as domain,
+                        (if (c.event_id is not null, 'EVENT',c.campaignType)) as type,
+                        10 as relevance,
+                        cu.alias as alias,
+                        c.photoUrl as urlImage,
+                        c.videoUrl as urlVideo,
+                        c.datePublished as datePublished,
+			            c.checkValidation as checkValidation,
+                        c.title as title,
+                        cu.name as ownerName,
+                        cu.mongoId as ownerId,
+                        (c.checkValidation AND (dc.validationCensus || dc.validationPhone || dc.validationCode)) as checkValidationActive
+                    from CAMPAIGN c join CRM_USER cu on c.crmUser_id = cu.id join NEWSLETTER n on c.newsletter_id=n.id join DOMAIN d on d.id = cu.domain_id join DOMAIN_CONFIG dc on d.id=dc.domain_id
+                    where c.datePublished &lt; NOW() and n.status='SENT' and c.deleted=0"
+                deltaImportQuery="SELECT
+                        c.id as id,
+                        c.body as body,
+                        d.domainName as domain,
+                        (if (c.event_id is not null, 'EVENT',c.campaignType)) as type,
+                        10 as relevance,
+                        cu.alias as alias,
+                        c.photoUrl as urlImage,
+                        c.videoUrl as urlVideo,
+                        c.datePublished as datePublished,
+                        c.checkValidation as checkValidation,
+                        c.title as title,
+                        cu.name as ownerName,
+                        cu.mongoId as ownerId,
+                        (c.checkValidation AND (dc.validationCensus || dc.validationPhone || dc.validationCode)) as checkValidationActive
+                    from CAMPAIGN c join CRM_USER cu on c.crmUser_id = cu.id join DOMAIN d on d.id=cu.domain_id join DOMAIN_CONFIG dc on d.id=dc.domain_id
+                    where c.id='${dih.delta.id}'"
+                deltaQuery="select c.id as id from CAMPAIGN c join NEWSLETTER n on c.newsletter_id=n.id where lastUpdate &gt; '${dih.last_index_time}' and datePublished &lt; NOW() and n.status='SENT' and c.deleted=0"
+                deletedPkQuery="select c.id from CAMPAIGN c join CRM_USER cu on c.crmUser_id=cu.id where cu.deleted=1 or c.deleted=1"
+                dataSource="kuorumDDBB"
+                processor="SqlEntityProcessor"
+		transformer="RegexTransformer"
+                >
+            <field column="solrId" name="id"/>
+            <field column="title" name="name"/>
+            <field column="domain" regex="-" replaceWith="_" name="domain"/>
+            <field column="ownerName" name="owner"/>
+            <field column="ownerId" name="ownerId"/>
+            <field column="type" name="type"/>
+            <field column="datePublished" name="dateCreated"/>
+            <field column="checkValidation" name="checkValidation"/>
+            <field column="checkValidation" name="checkValidationActive"/>
+            <field column="alias" name="alias"/>
+            <field column="urlImage" name="urlImage"/>
+            <field column="urlVideo" name="urlVideo"/>
+            <field column="body" name="text"/>
+            <field column="relevance" name="relevance"/>
+            <entity
+                name="cause"
+                query="select c.name as causeName FROM CAMPAIGN_CAUSE cc join CAUSE c on c.id =cc.cause_id where cc.campaign_id='${campaign.id}'"
+                dataSource="kuorumDDBB"
+                processor="SqlEntityProcessor"
+            >
+                <field column="causeName" name="tags"/>
+            </entity>
+
+        </entity>
+
+    </document>
+
+<script><![CDATA[
+        function transformKuorumUser(row){
+            row.put('id', row.get('_id').toString());
+            row.put('name', getFullName(row));
+            row.put('type', "KUORUM_USER");
+	    prepareDomain(row)
+            row.put('dateCreated', row.get('dateCreated'));
+	        row.put('alias', row.get('alias'));
+	        getTags(row);
+            getRegionNameFromUser(row);
+            getAvatar(row);
+            getRoleName(row);
+            getImageProfile(row);
+            getRole(row);
+            getGender(row);
+            getPoliticianInfo(row);
+            row.put('text', row.get('bio'));
+            row.put('kuorumRelevance', row.get('relevance'));
+            row.put('relevance', calcRelevance(row));
+            return row;
+        }
+
+	function prepareDomain(kuorumUser){
+	    if(kuorumUser.get('domain')){
+		kuorumUser.put('domain', kuorumUser.get('domain').replaceAll('-', '_'));
+	    }else{
+		// THIS CASE IS NOT POSSIBLE
+		kuorumUser.put('domain', 'INVALID_DOMAIN');
+	    }
+	}
+
+        function calcRelevance(kuorumUser){
+            var numCommunications = 0;
+            if (kuorumUser.get('numCommunications')){
+                numCommunications = parseInt(kuorumUser.get('numCommunications'));
+            }
+            var isEnabled = 0;
+            if (kuorumUser.get("enabled")==true){
+                isEnabled = 1;
+            }else{
+                isEnable = -9000;
+            }
+
+            var images = 0;
+            if (kuorumUser.get('avatar')){
+                images = images +1;
+            }
+            if (kuorumUser.get('imageProfile')){
+                images = images +1;
+            }
+            return images + isEnabled *10 + numCommunications*10;
+        }
+
+    function getFullName(kuorumUser){
+        var fullName = kuorumUser.get('name');
+        if (kuorumUser.get('surname') != null){
+            var fullName = kuorumUser.get('name') +' '+ kuorumUser.get('surname');
+        }
+        fullName = fullName.trim();
+        return fullName;
+    }
+
+    function getPoliticianInfo(kuorumUser){
+        var professionalDetailsField = "professionalDetails";
+        if (kuorumUser.get(professionalDetailsField) !=null){
+            var politicalPartyName = kuorumUser.get(professionalDetailsField).get('politicalParty')
+            if (politicalPartyName!= null){kuorumUser.put('politicalPartyName',politicalPartyName)}
+		}
+    }
+
+	function getTags(kuorumUser){
+		if (kuorumUser.get('ideology') !=null && kuorumUser.get('ideology').get('supportedCauses')){
+			kuorumUser.put('tags',kuorumUser.get('ideology').get('supportedCauses'))
+		}else{
+			kuorumUser.put('tags',[])
+		}
+	}
+
+        function getRole(kuorumUser){
+            if (kuorumUser.get('gamification') != null && kuorumUser.get('gamification').get('activeRole')!= null){
+                kuorumUser.put('role',kuorumUser.get('gamification').get('activeRole'))
+            }else{
+                kuorumUser.put('role','ROLE_DEFAULT')
+            }
+        }
+        function getGender(kuorumUser){
+            if (kuorumUser.get('personalData') != null && kuorumUser.get('personalData').get('gender') != null){
+                kuorumUser.put("gender", kuorumUser.get('personalData').get('gender'));
+            }else{
+                kuorumUser.put("gender", "FEMALE");
+            }
+        }
+        function getRoleName(kuorumUser){
+            if (kuorumUser.get('professionalDetails') != null && kuorumUser.get('professionalDetails').get('position') != null){
+                kuorumUser.put("roleName", kuorumUser.get('professionalDetails').get('position'));
+	    }
+        }
+
+        function getAvatar(kuorumUser){
+            if (kuorumUser.get('avatar') != null){
+                kuorumUser.put("urlImage",kuorumUser.get('avatar').get('url'));
+            }
+        }
+        function getImageProfile(kuorumUser){
+            if (kuorumUser.get('imageProfile') != null){
+                kuorumUser.put("urlImageProfile",kuorumUser.get('imageProfile').get('url'));
+            }
+        }
+        function getIfUserIsValidated(kuorumUser){
+            if (kuorumUser.get('isValid') != null && kuorumUser.get('isValid')){
+                kuorumUser.put("checkValidation",true);
+            }else{
+                kuorumUser.put("checkValidation",false);
+            }
+        }
+	function getRegionNameFromUser(kuorumUser){
+		var regionName ="";
+		var regionIso = "";
+		var regionIso3166_2Length = 0;
+
+		var constituencyIso = "";
+		var constituencyIsoLength = 0;
+		if (kuorumUser.get('personalData') == null || kuorumUser.get('personalData').get('province') == null){
+            //Usuarios de antigua web que se indexen
+            regionName = "Unknown"
+            regionIso = "NoValid"
+	        regionIso3166_2Length = 0
+        }else{
+            regionName = kuorumUser.get('personalData').get('province')
+            regionIso = kuorumUser.get('personalData').get('provinceCode')
+	        regionIso3166_2Length = regionIso.length()
+        }
+
+		if (kuorumUser.get('professionalDetails') != null && kuorumUser.get('professionalDetails').get('region') != null){
+            regionName = kuorumUser.get('professionalDetails').get('region').get('name')
+            regionIso = kuorumUser.get('professionalDetails').get('region').get('iso3166_2')
+	        regionIso3166_2Length = regionIso.length()
+        }
+
+        if (kuorumUser.get('professionalDetails') != null && kuorumUser.get('professionalDetails').get('constituency') != null){
+            //regionName = kuorumUser.get('professionalDetails').get('constituency').get('name')
+            constituencyIso = kuorumUser.get('professionalDetails').get('constituency').get('iso3166_2')
+	        constituencyIsoLength = constituencyIso.length()
+        }
+
+ 		kuorumUser.put('regionName', regionName);
+		kuorumUser.put('regionIso3166_2', regionIso.replaceAll('-', ''));
+		kuorumUser.put('regionIso3166_2Length', regionIso3166_2Length);
+		kuorumUser.put('constituencyIso3166_2', constituencyIso.replaceAll('-', ''));
+		kuorumUser.put('constituencyIso3166_2Length', constituencyIsoLength);
+	}
+        ]]></script>
+</dataConfig>
