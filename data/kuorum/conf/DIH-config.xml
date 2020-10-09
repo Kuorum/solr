@@ -62,7 +62,7 @@
                         c.title as title,
                         cu.name as ownerName,
                         cu.mongoId as ownerId,
-                        (c.checkValidation AND (dc.validationCensus || dc.validationPhone || dc.validationCode)) as checkValidationActive
+                        (c.validationType!='NONE' AND (dc.validationCensus || dc.validationPhone || dc.validationCode)) as checkValidationActive
                     from CAMPAIGN c join CRM_USER cu on c.crmUser_id = cu.id join NEWSLETTER n on c.newsletter_id=n.id join DOMAIN d on d.id = cu.domain_id join DOMAIN_CONFIG dc on d.id=dc.domain_id
                     where c.datePublished &lt; NOW() and n.status='SENT' and c.deleted=0"
                 deltaImportQuery="SELECT
@@ -79,7 +79,7 @@
                         c.title as title,
                         cu.name as ownerName,
                         cu.mongoId as ownerId,
-                        (c.checkValidation AND (dc.validationCensus || dc.validationPhone || dc.validationCode)) as checkValidationActive
+                        (c.validationType!='NONE' AND (dc.validationCensus || dc.validationPhone || dc.validationCode)) as checkValidationActive
                     from CAMPAIGN c join CRM_USER cu on c.crmUser_id = cu.id join DOMAIN d on d.id=cu.domain_id join DOMAIN_CONFIG dc on d.id=dc.domain_id
                     where c.id='${dih.delta.id}'"
                 deltaQuery="select c.id as id from CAMPAIGN c join NEWSLETTER n on c.newsletter_id=n.id where lastUpdate &gt; '${dih.last_index_time}' and datePublished &lt; NOW() and n.status='SENT' and c.deleted=0"
