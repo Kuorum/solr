@@ -5,14 +5,20 @@
                 database="Kuorum"
                 host="192.168.0.150"
                 port="27017"/>
-
+<!--
     <dataSource name="kuorumDDBB"
                 type="JdbcDataSource"
                 driver="com.mysql.jdbc.Driver"
-                url="jdbc:mysql://192.168.0.170/kuorum?useSSL=false"
+                url="jdbc:mysql://192.168.0.70/kuorum?useSSL=false"
                 user="kuorum"
                 password="kuorumDBPass"/>
-
+-->
+    <dataSource name="kuorumDDBB"
+                type="JdbcDataSource"
+                driver="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://di15305-001.dbaas.ovh.net:35762/kuorum-test?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;useTimezone=true&amp;serverTimezone=UTC&amp;characterEncoding=UTF-8&amp;useSSL=false"
+                user="kuorum-api"
+                password="APIlecturaESCRITURA83"/>
     <propertyWriter dateFormat="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" type="SimplePropertiesWriter" />
 
     <document name="kuorum">
