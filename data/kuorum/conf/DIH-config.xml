@@ -58,7 +58,6 @@
                         c.photoUrl as urlImage,
                         c.videoUrl as urlVideo,
                         c.datePublished as datePublished,
-			            c.checkValidation as checkValidation,
                         c.title as title,
                         cu.name as ownerName,
                         cu.mongoId as ownerId,
@@ -75,7 +74,6 @@
                         c.photoUrl as urlImage,
                         c.videoUrl as urlVideo,
                         c.datePublished as datePublished,
-                        c.checkValidation as checkValidation,
                         c.title as title,
                         cu.name as ownerName,
                         cu.mongoId as ownerId,
@@ -95,8 +93,7 @@
             <field column="ownerId" name="ownerId"/>
             <field column="type" name="type"/>
             <field column="datePublished" name="dateCreated"/>
-            <field column="checkValidation" name="checkValidation"/>
-            <field column="checkValidation" name="checkValidationActive"/>
+            <field column="checkValidationActive" name="checkValidationActive"/>
             <field column="alias" name="alias"/>
             <field column="urlImage" name="urlImage"/>
             <field column="urlVideo" name="urlVideo"/>
@@ -225,9 +222,9 @@
         }
         function getIfUserIsValidated(kuorumUser){
             if (kuorumUser.get('isValid') != null && kuorumUser.get('isValid')){
-                kuorumUser.put("checkValidation",true);
+                kuorumUser.put("checkValidationActive",true);
             }else{
-                kuorumUser.put("checkValidation",false);
+                kuorumUser.put("checkValidationActive",false);
             }
         }
 	function getRegionNameFromUser(kuorumUser){
