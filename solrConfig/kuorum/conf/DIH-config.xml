@@ -57,7 +57,7 @@
                         cu.name as ownerName,
                         cu.mongoId as ownerId
                     from CAMPAIGN c join CRM_USER cu on c.crmUser_id = cu.id join NEWSLETTER n on c.newsletter_id=n.id
-                    where c.datePublished &lt; NOW() and n.status='SENT' and c.deleted=0"
+                    where c.datePublished &lt; NOW() and n.status='SENT' and c.deleted=0 and c.campaignType != 'BULLETIN' "
                 deltaImportQuery="SELECT
                         c.id as id,
                         c.body as body,
@@ -72,7 +72,7 @@
                         cu.mongoId as ownerId
                     from CAMPAIGN c join CRM_USER cu on c.crmUser_id = cu.id
                     where c.id='${dih.delta.id}'"
-                deltaQuery="select c.id as id from CAMPAIGN c join NEWSLETTER n on c.newsletter_id=n.id where lastUpdate &gt; '${dih.last_index_time}' and datePublished &lt; NOW() and n.status='SENT' and c.deleted=0"
+                deltaQuery="select c.id as id from CAMPAIGN c join NEWSLETTER n on c.newsletter_id=n.id where lastUpdate &gt; '${dih.last_index_time}' and datePublished &lt; NOW() and n.status='SENT' and c.deleted=0 and and c.campaignType != 'BULLETIN'"
                 deletedPkQuery="select c.id from CAMPAIGN c join CRM_USER cu on c.crmUser_id=cu.id where cu.deleted=1 or c.deleted=1"
                 dataSource="kuorumDDBB"
                 processor="SqlEntityProcessor"
