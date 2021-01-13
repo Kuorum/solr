@@ -9,7 +9,7 @@
     <dataSource name="kuorumDDBB"
                 type="JdbcDataSource"
                 driver="com.mysql.jdbc.Driver"
-                url="jdbc:mysql://192.168.0.70/kuorum?useSSL=false"
+                url="jdbc:mysql://192.168.0.71/kuorum?useSSL=false"
                 user="kuorum"
                 password="kuorumDBPass"/>
 -->
@@ -19,6 +19,7 @@
 		url="jdbc:mysql://di15305-001.dbaas.ovh.net:35762/kuorum-test?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;useTimezone=true&amp;serverTimezone=UTC&amp;characterEncoding=UTF-8&amp;useSSL=false"
                 user="kuorum-api"
                 password="APIlecturaESCRITURA83"/>
+
     <propertyWriter dateFormat="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" type="SimplePropertiesWriter" />
 
     <document name="kuorum">
@@ -63,7 +64,7 @@
                         cu.mongoId as ownerId,
                         (c.validationType!='NONE' AND (dc.validationCensus || dc.validationPhone || dc.validationCode)) as checkValidationActive
                     from CAMPAIGN c join CRM_USER cu on c.crmUser_id = cu.id join NEWSLETTER n on c.newsletter_id=n.id join DOMAIN d on d.id = cu.domain_id join DOMAIN_CONFIG dc on d.id=dc.domain_id
-                    where c.datePublished &lt; NOW() and n.status='SENT' and c.deleted=0"
+                    where c.datePublished &lt; NOW() and n.status='SENT' and c.deleted=0 and c.campaignType != 'BULLETIN'"
                 deltaImportQuery="SELECT
                         c.id as id,
                         c.body as body,
@@ -80,7 +81,7 @@
                         (c.validationType!='NONE' AND (dc.validationCensus || dc.validationPhone || dc.validationCode)) as checkValidationActive
                     from CAMPAIGN c join CRM_USER cu on c.crmUser_id = cu.id join DOMAIN d on d.id=cu.domain_id join DOMAIN_CONFIG dc on d.id=dc.domain_id
                     where c.id='${dih.delta.id}'"
-                deltaQuery="select c.id as id from CAMPAIGN c join NEWSLETTER n on c.newsletter_id=n.id where lastUpdate &gt; '${dih.last_index_time}' and datePublished &lt; NOW() and n.status='SENT' and c.deleted=0"
+                deltaQuery="select c.id as id from CAMPAIGN c join NEWSLETTER n on c.newsletter_id=n.id where lastUpdate &gt; '${dih.last_index_time}' and datePublished &lt; NOW() and n.status='SENT' and c.deleted=0 and c.campaignType != 'BULLETIN'"
                 deletedPkQuery="select c.id from CAMPAIGN c join CRM_USER cu on c.crmUser_id=cu.id where cu.deleted=1 or c.deleted=1"
                 dataSource="kuorumDDBB"
                 processor="SqlEntityProcessor"
