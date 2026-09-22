@@ -25,6 +25,10 @@
    <field name="urlImage"		type="string"  indexed="false" stored="true" required="false"/>
    <field name="urlImageProfile" type="string"  indexed="false" stored="true" required="false"/>
    <field name="urlVideo"		type="string"  indexed="false" stored="true" required="false"/>
+
+   <!-- ContestApplication with-collaborator variant (pharmacy/association): collaborating entity's name + logo URL -->
+   <field name="associationName"	type="text_es" indexed="true" stored="true" required="false"/>
+   <field name="associationImage"	type="string"  indexed="false" stored="true" required="false"/>
    <!-- KuorumUser gender -->
    <field name="gender"			type="string"  indexed="true" stored="true" required="false"/>
    <!-- Politician: politicalParty.name | project: owner.politicalParty.name | Post: project.owner.politicalParty.name-->

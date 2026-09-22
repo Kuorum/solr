@@ -55,8 +55,10 @@
                         c.datePublished as datePublished,
                         c.title as title,
                         cu.name as ownerName,
-                        cu.mongoId as ownerId
-                    from CAMPAIGN c join CRM_USER cu on c.crmUser_id = cu.id join NEWSLETTER n on c.newsletter_id=n.id
+                        cu.mongoId as ownerId,
+                        ca.associationName as associationName,
+                        ca.associationImage as associationImage
+                    from CAMPAIGN c join CRM_USER cu on c.crmUser_id = cu.id join NEWSLETTER n on c.newsletter_id=n.id left join CONTEST_APPLICATION ca on ca.id = c.id
                     where c.datePublished &lt; NOW() and n.status='SENT' and c.deleted=0 and c.campaignType != 'BULLETIN' "
                 deltaImportQuery="SELECT
                         c.id as id,
@@ -69,8 +71,10 @@
                         c.datePublished as datePublished,
                         c.title as title,
                         cu.name as ownerName,
-                        cu.mongoId as ownerId
-                    from CAMPAIGN c join CRM_USER cu on c.crmUser_id = cu.id
+                        cu.mongoId as ownerId,
+                        ca.associationName as associationName,
+                        ca.associationImage as associationImage
+                    from CAMPAIGN c join CRM_USER cu on c.crmUser_id = cu.id left join CONTEST_APPLICATION ca on ca.id = c.id
                     where c.id='${dih.delta.id}'"
                 deltaQuery="select c.id as id from CAMPAIGN c join NEWSLETTER n on c.newsletter_id=n.id where lastUpdate &gt; '${dih.last_index_time}' and datePublished &lt; NOW() and n.status='SENT' and c.deleted=0 and and c.campaignType != 'BULLETIN'"
                 deletedPkQuery="select c.id from CAMPAIGN c join CRM_USER cu on c.crmUser_id=cu.id where cu.deleted=1 or c.deleted=1"
@@ -88,6 +92,8 @@
             <field column="urlVideo" name="urlVideo"/>
             <field column="body" name="text"/>
             <field column="relevance" name="relevance"/>
+            <field column="associationName" name="associationName"/>
+            <field column="associationImage" name="associationImage"/>
             <entity
                 name="cause"
                 query="select c.name as causeName FROM CAMPAIGN_CAUSE cc join CAUSE c on c.id =cc.cause_id where cc.campaign_id='${campaign.id}'"
